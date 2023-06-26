@@ -1,4 +1,3 @@
-import { Typography } from "@mui/joy";
 import SectionCard from "./General/SectionCard";
 import SectionTitle from "./General/SectionTitle";
 
