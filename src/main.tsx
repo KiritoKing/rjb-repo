@@ -4,6 +4,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Main from "@/Pages/Main";
 
 import "./index.css";
+import "@fontsource/public-sans";
+import { CssVarsProvider } from "@mui/joy";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +16,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <CssVarsProvider>
+      <RouterProvider router={router} />
+    </CssVarsProvider>
   </React.StrictMode>
 );
