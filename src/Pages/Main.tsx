@@ -3,8 +3,7 @@ import ModelManage from "@/Components/ModalManage";
 import ModelApply from "@/Components/ModelApply";
 import UserProfile from "@/Components/UserProfile";
 import useLogin from "@/Hooks/useLogin";
-import { Button, Sheet } from "@mui/joy";
-import { useState } from "react";
+import { Sheet } from "@mui/joy";
 
 const Main = () => {
   const [logIn, setLogIn] = useLogin();

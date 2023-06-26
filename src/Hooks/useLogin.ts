@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function useLogin(): [boolean, (value: boolean) => void] {
   const [login, setLogin] = useState(false);
