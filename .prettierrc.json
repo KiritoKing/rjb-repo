@@ -1,7 +1,6 @@
 {
   "arrowParens": "always",
   "bracketSpacing": true,
-  "endOfLine": "lf",
   "htmlWhitespaceSensitivity": "css",
   "insertPragma": false,
   "singleAttributePerLine": false,
