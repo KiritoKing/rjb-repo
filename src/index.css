@@ -9,3 +9,7 @@ div {
   font: inherit;
   vertical-align: baseline;
 }
+
+div {
+  background-color: transparent;
+}
