@@ -22,7 +22,7 @@ const ModelManage = () => {
         <SectionTitle title="模型管理" subTitle="Model Mangement" />
         <Button startDecorator={<AddIcon />}>训练模型</Button>
       </Sheet>
-      <Sheet sx={{ px: 2 }}>
+      <Sheet sx={{ px: 2, my: 2 }}>
         <ModelList options={testData} />
       </Sheet>
     </SectionCard>

@@ -1,6 +1,5 @@
 import React from "react";
 import Modal from "@mui/joy/Modal";
-import ModalClose from "@mui/joy/ModalClose";
 import ModalDialog from "@mui/joy/ModalDialog";
 import Sheet from "@mui/joy/Sheet";
 import { Button, FormControl, FormLabel, Input, Typography } from "@mui/joy";
@@ -16,6 +15,7 @@ const LoginModal: React.FC<IProps> = ({ open, onLogin }) => {
     <Modal open={open}>
       <ModalDialog>
         <Sheet
+          component="form"
           sx={{
             minWidth: 400,
             mx: 5,
