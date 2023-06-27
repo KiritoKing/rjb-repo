@@ -1,6 +1,6 @@
 import { Sheet } from "@mui/joy";
 import * as echarts from "echarts";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 const OverviewChart = () => {
   const chartRef = useRef<HTMLDivElement>(null);
@@ -80,6 +80,7 @@ const OverviewChart = () => {
         width: "100%",
         height: "400px",
         my: 2,
+        borderRadius: 2,
       }}
     >
       OverviewChart

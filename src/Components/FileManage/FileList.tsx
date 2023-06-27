@@ -2,11 +2,13 @@ import { Card, IconButton, Stack, Tooltip, Typography } from "@mui/joy";
 import FilePresentIcon from "@mui/icons-material/FilePresent";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { FC } from "react";
+import { FC, useState } from "react";
+import TablePreviewDialog from "./TablePreviewDialog";
 
 interface IItemProps {
   file: IFileInfo;
   onDelete?: () => void;
+  onPreview?: () => void;
 }
 
 interface IListProps {
@@ -14,7 +16,7 @@ interface IListProps {
   onDeleteItem?: (index: number) => void;
 }
 
-const FileItem: FC<IItemProps> = ({ file, onDelete }) => {
+const FileItem: FC<IItemProps> = ({ file, onDelete, onPreview }) => {
   return (
     <Card
       variant="outlined"
@@ -27,14 +29,16 @@ const FileItem: FC<IItemProps> = ({ file, onDelete }) => {
       }}
     >
       <Typography
+        onClick={onPreview}
         level="body2"
-        component="span"
+        component="a"
         sx={{
           height: "100%",
           display: "flex",
           alignItems: "center",
           px: 1,
           flex: 1,
+          cursor: "pointer",
         }}
       >
         <FilePresentIcon sx={{ mr: 1 }} />
@@ -58,6 +62,14 @@ const FileItem: FC<IItemProps> = ({ file, onDelete }) => {
 };
 
 const FileList: FC<IListProps> = ({ files, onDeleteItem }) => {
+  const [previewDialogOpen, setPreviewDialogOpen] = useState(false);
+  const [currentFile, setCurrentFile] = useState<IFileInfo>();
+
+  const handlePreivew = (index: number) => {
+    setCurrentFile(files[index]);
+    setPreviewDialogOpen(true);
+  };
+
   if (files.length === 0) {
     return (
       <Typography
@@ -78,11 +90,19 @@ const FileList: FC<IListProps> = ({ files, onDeleteItem }) => {
     <Stack>
       {files.map((file, index) => {
         return (
-          <FileItem
-            key={index}
-            file={file}
-            onDelete={() => onDeleteItem?.(index)}
-          />
+          <>
+            <FileItem
+              key={index}
+              file={file}
+              onDelete={() => onDeleteItem?.(index)}
+              onPreview={() => handlePreivew(index)}
+            />
+            <TablePreviewDialog
+              open={previewDialogOpen}
+              data={currentFile}
+              onClose={() => setPreviewDialogOpen(false)}
+            />
+          </>
         );
       })}
     </Stack>

@@ -18,6 +18,7 @@ const Main = () => {
         display: "flex",
         flexDirection: "column",
         gap: 5,
+        backgroundColor: "transparent",
       }}
     >
       <UserProfile />

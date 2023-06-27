@@ -16,6 +16,7 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/joy": "5.0.0-alpha.85",
     "@mui/material": "^5.13.6",
+    "csv": "^6.3.1",
     "echarts": "^5.4.2",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
