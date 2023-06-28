@@ -1,11 +1,16 @@
 import { Sheet } from "@mui/joy";
 import * as echarts from "echarts";
-import { useEffect, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 
-const OverviewChart = () => {
+interface IProps {
+  data: number[];
+}
+
+const LineChart: FC<IProps> = () => {
   const chartRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (chartRef.current !== null) {
+      echarts.dispose(chartRef.current);
       const chart = echarts.init(chartRef.current);
       const option: echarts.EChartsOption = {
         title: {
@@ -88,4 +93,4 @@ const OverviewChart = () => {
   );
 };
 
-export default OverviewChart;
+export default LineChart;

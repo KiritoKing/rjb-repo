@@ -1,10 +1,12 @@
 import { Sheet, Typography } from "@mui/joy";
 import UploadButton from "./UploadButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FileList from "./FileList";
+import useCsv from "@/Hooks/useCsv";
 
 const FileUpload = () => {
   const [files, setFiles] = useState<IFileInfo[]>([]);
+  const [csvData] = useCsv(files);
 
   const handleUpload = (file: File) => {
     setFiles((files) => [...files, { title: file.name, blob: file }]);
@@ -13,6 +15,10 @@ const FileUpload = () => {
   const handleDelete = (index: number) => {
     setFiles((files) => files.filter((_, i) => i !== index));
   };
+
+  useEffect(() => {
+    console.log(csvData);
+  }, [csvData]);
 
   return (
     <Sheet sx={{ mt: 2 }}>

@@ -20,3 +20,8 @@ interface IFileInfo {
 interface IStringDict {
   [key: string]: string;
 }
+
+interface ITableData {
+  columns?: string[];
+  data: string[][];
+}
