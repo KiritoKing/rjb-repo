@@ -1,4 +1,4 @@
-import { Card } from "@mui/joy";
+import { Card, Stack } from "@mui/joy";
 import React, { PropsWithChildren } from "react";
 
 const SectionCard: React.FC<PropsWithChildren> = ({ children }) => {
@@ -12,7 +12,9 @@ const SectionCard: React.FC<PropsWithChildren> = ({ children }) => {
         backgroundColor: "rgba(255, 255, 255, 0.5)",
       }}
     >
-      {children}
+      <Stack spacing={2} sx={{ width: "100%" }}>
+        {children}
+      </Stack>
     </Card>
   );
 };

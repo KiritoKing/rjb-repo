@@ -22,7 +22,7 @@ interface IProps {
 const TablePreviewDialog: React.FC<IProps> = ({ open, onClose }) => {
   return (
     <Modal open={open} onClose={onClose}>
-      <ModalDialog>
+      <ModalDialog sx={{ transition: "opacity 0.3s, visibility 0s 0.3s" }}>
         <ModalClose />
         <Sheet
           component="form"
@@ -30,7 +30,7 @@ const TablePreviewDialog: React.FC<IProps> = ({ open, onClose }) => {
             minWidth: "50vw",
             minHeight: "30vh",
             mx: 5,
-            my: 4, // margin top & bottom
+            my: 4,
             display: "flex",
             flexDirection: "column",
             gap: 2,

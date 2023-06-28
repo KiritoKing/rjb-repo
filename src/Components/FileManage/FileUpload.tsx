@@ -27,7 +27,7 @@ const FileUpload = () => {
       >
         <Sheet sx={{ display: "flex", alignItems: "center", mb: 2 }}>
           <Typography sx={{ flex: 1 }} level="h5" component="span">
-            选择用于预测的文件
+            选择要上传的文件
           </Typography>
           <UploadButton onUpload={handleUpload} />
         </Sheet>
