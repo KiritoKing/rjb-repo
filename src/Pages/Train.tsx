@@ -3,7 +3,7 @@ import SectionTitle from "@/Components/General/SectionTitle";
 import { IconButton, Sheet } from "@mui/joy";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
-import ModelInfo from "@/Components/ModelInfo";
+import ModelInfo from "@/Components/ModelManage/ModelInfo";
 import FileUpload from "@/Components/FileManage/FileUpload";
 
 const Train = () => {

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import _, { set } from "lodash";
+import { useEffect, useState } from "react";
+import _ from "lodash";
 
 interface IOption {
   dillema?: string; // 分隔符
@@ -15,7 +15,7 @@ async function readCsv(file: Blob, dillema = ","): Promise<ITableData | null> {
       const text = reader.result as string;
       const lines = text
         .split("\n")
-        .map((line) => line.trim().replace(/"/g, ""));
+        .map((line) => line.trim().replace(/"/g, "")); // 去除CRLF行尾
       const columns = lines[0].split(dillema);
       const data = lines
         .slice(1)
