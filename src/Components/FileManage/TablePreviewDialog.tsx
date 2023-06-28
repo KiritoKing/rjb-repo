@@ -2,18 +2,8 @@ import React, { useMemo } from "react";
 import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
 import Sheet from "@mui/joy/Sheet";
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  ModalClose,
-  Table,
-  Typography,
-} from "@mui/joy";
+import { ModalClose, Table } from "@mui/joy";
 import useCsv from "@/Hooks/useCsv";
-
-type TableUnitDataType = number | string | null;
 
 interface IProps {
   open: boolean;
@@ -49,13 +39,13 @@ const TablePreviewDialog: React.FC<IProps> = ({ open, onClose, data }) => {
             <caption>{data?.title} 数据预览（前100条数据）</caption>
             <thead>
               <tr>
-                {csvData.columns?.map((column) => (
-                  <th>{column}</th>
+                {csvData.columns?.map((column, i) => (
+                  <th key={i}>{column}</th>
                 ))}
               </tr>
-              {csvData.data.slice(0, 100).map((row) => {
+              {csvData.data.slice(0, 100).map((row, i) => {
                 return (
-                  <tr>
+                  <tr key={i}>
                     {row.map((cell) => (
                       <td>{cell}</td>
                     ))}
