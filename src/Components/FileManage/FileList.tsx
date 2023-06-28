@@ -2,7 +2,7 @@ import { Card, IconButton, Stack, Typography } from "@mui/joy";
 import FilePresentIcon from "@mui/icons-material/FilePresent";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { FC, useState } from "react";
+import React, { FC, useState } from "react";
 import TablePreviewDialog from "./TablePreviewDialog";
 
 interface IItemProps {
@@ -90,9 +90,8 @@ const FileList: FC<IListProps> = ({ files, onDeleteItem }) => {
     <Stack>
       {files.map((file, index) => {
         return (
-          <>
+          <React.Fragment key={index}>
             <FileItem
-              key={index}
               file={file}
               onDelete={() => onDeleteItem?.(index)}
               onPreview={() => handlePreivew(index)}
@@ -102,7 +101,7 @@ const FileList: FC<IListProps> = ({ files, onDeleteItem }) => {
               data={currentFile}
               onClose={() => setPreviewDialogOpen(false)}
             />
-          </>
+          </React.Fragment>
         );
       })}
     </Stack>
