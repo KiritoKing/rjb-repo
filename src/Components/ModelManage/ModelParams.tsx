@@ -1,7 +1,7 @@
 import { FormControl, FormLabel, Input, Sheet } from "@mui/joy";
 import { FC, useMemo } from "react";
 import i18n from "@/Constants/Lang/zh-CN";
-import FormInput from "./General/FormInput";
+import FormInput from "../General/FormInput";
 
 interface IProps {
   readonly?: boolean;

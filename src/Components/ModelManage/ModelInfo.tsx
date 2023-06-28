@@ -1,6 +1,6 @@
 import { Sheet } from "@mui/joy";
 import ModelParams from "./ModelParams";
-import FormInput from "./General/FormInput";
+import FormInput from "@/Components/General/FormInput";
 
 const testParam: IModelParam = {
   epoch: 10,

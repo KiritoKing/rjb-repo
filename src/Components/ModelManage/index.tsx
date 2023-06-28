@@ -1,8 +1,8 @@
 import { Button, Sheet } from "@mui/joy";
 import AddIcon from "@mui/icons-material/Add";
 import ModelList from "./ModelList";
-import SectionCard from "./General/SectionCard";
-import SectionTitle from "./General/SectionTitle";
+import SectionCard from "../General/SectionCard";
+import SectionTitle from "../General/SectionTitle";
 import { Link } from "react-router-dom";
 
 const testData: IModelInfo[] = [
