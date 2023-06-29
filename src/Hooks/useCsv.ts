@@ -6,6 +6,33 @@ interface IOption {
   withColumn?: boolean; // 第一行默认为列名
 }
 
+function extractColumns(line: string, dillema: string): string[] {
+  const columnNames = [];
+  let columnName = "";
+  let insideQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+
+    if (char === '"') {
+      // 处理双引号
+      insideQuotes = !insideQuotes;
+    } else if (char === "," && !insideQuotes) {
+      // 处理逗号（仅在不在双引号内时）
+      columnNames.push(columnName.trim());
+      columnName = "";
+    } else {
+      // 添加字符到列名
+      columnName += char;
+    }
+  }
+
+  // 添加最后一个列名
+  columnNames.push(columnName.trim());
+
+  return columnNames;
+}
+
 async function readCsv(file: Blob, dillema = ","): Promise<ITableData | null> {
   const reader = new FileReader();
   reader.readAsText(file);
@@ -16,7 +43,9 @@ async function readCsv(file: Blob, dillema = ","): Promise<ITableData | null> {
       const lines = text
         .split("\n")
         .map((line) => line.trim().replace(/"/g, "")); // 去除CRLF行尾
-      const columns = lines[0].split(dillema);
+      // 匹配CSV表头
+      console.log(lines[0]);
+      const columns = extractColumns(lines[0], dillema);
       const data = lines
         .slice(1)
         .map((line) => line.split(dillema))

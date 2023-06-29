@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import useCsv from "./useCsv";
 
 interface IStore {
   csvFiles: IFileInfo[];

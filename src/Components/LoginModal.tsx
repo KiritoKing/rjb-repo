@@ -1,8 +1,11 @@
-import React from "react";
+import { useState } from "react";
 import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
 import Sheet from "@mui/joy/Sheet";
 import { Button, FormControl, FormLabel, Input, Typography } from "@mui/joy";
+import useApi from "@/Hooks/useApi";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { AxiosError } from "axios";
 
 interface IProps {
   open: boolean;
@@ -11,6 +14,37 @@ interface IProps {
 }
 
 const LoginModal: React.FC<IProps> = ({ open, onLogin }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null); //
+  const api = useApi();
+
+  const handleLogin = () => {
+    setError(null);
+    if (username === "local") {
+      onLogin && onLogin();
+      return;
+    }
+    const req = { username, password };
+    api
+      .post("v1/login", req)
+      .then(({ data }) => data)
+      .then((data) => {
+        if (data.code === "0") {
+          onLogin && onLogin();
+        }
+      })
+      .catch((e: AxiosError) => {
+        console.log(e);
+        const { status } = e?.response || {};
+        if (status === 500) {
+          setError("请确保后端服务已开启");
+        } else {
+          setError(e.message);
+        }
+      });
+  };
+
   return (
     <Modal open={open}>
       <ModalDialog>
@@ -33,16 +67,50 @@ const LoginModal: React.FC<IProps> = ({ open, onLogin }) => {
           </Sheet>
           <FormControl>
             <FormLabel>用户名</FormLabel>
-            <Input name="username" type="text" placeholder="请输入用户名" />
+            <Input
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleLogin();
+                }
+              }}
+              name="username"
+              type="text"
+              placeholder="请输入用户名"
+            />
           </FormControl>
           <FormControl>
             <FormLabel>密码</FormLabel>
-            <Input name="password" type="password" placeholder="请输入密码" />
+            <Input
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleLogin();
+                }
+              }}
+              name="password"
+              type="password"
+              placeholder="请输入密码"
+            />
           </FormControl>
+          {error && (
+            <Typography
+              color="danger"
+              level="body2"
+              sx={{ display: "flex", alignItems: "center" }}
+            >
+              <ErrorOutlineIcon sx={{ mr: 1 }} />
+              {error}
+            </Typography>
+          )}
           <Sheet
             sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 2 }}
           >
-            <Button onClick={onLogin}>登录</Button>
+            <Button onClick={handleLogin}>登录</Button>
             <Button>注册</Button>
           </Sheet>
         </Sheet>

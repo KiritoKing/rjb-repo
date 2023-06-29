@@ -1,13 +1,15 @@
 import { FormControl, FormLabel, Input, Typography } from "@mui/joy";
-import { FC } from "react";
+import { FC, HTMLInputTypeAttribute } from "react";
 
 interface IProps {
   name: string;
   label?: string;
+  type?: HTMLInputTypeAttribute;
   required?: boolean;
   initValue?: string | number;
   disabled?: boolean;
   onChange?: (value: string | number) => void;
+  onReturn?: () => void;
   labelWidth?: number;
   inputWidth?: number;
 }
@@ -15,12 +17,14 @@ interface IProps {
 const FormInput: FC<IProps> = ({
   name,
   label,
+  type = "text",
   required,
   initValue,
   disabled,
   labelWidth,
   inputWidth,
   onChange,
+  onReturn,
 }) => {
   return (
     <FormControl
@@ -38,10 +42,16 @@ const FormInput: FC<IProps> = ({
       </Typography>
       <Input
         name={name}
+        type={type}
         defaultValue={initValue}
         disabled={disabled}
         onChange={(e) => {
           onChange?.(e.target.value);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            onReturn?.();
+          }
         }}
         sx={{ width: inputWidth && `${inputWidth}px` }}
       />
