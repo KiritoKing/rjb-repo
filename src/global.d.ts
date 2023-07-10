@@ -29,6 +29,6 @@ interface ITableData {
 
 interface AxiosResponse<T> {
   code: number;
-  data: T;
+  data?: T;
   msg?: string;
 }

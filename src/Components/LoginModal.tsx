@@ -6,6 +6,7 @@ import { Button, FormControl, FormLabel, Input, Typography } from "@mui/joy";
 import useApi from "@/Hooks/useApi";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { AxiosError } from "axios";
+import useAxios from "@/Hooks/useAxios";
 
 interface IProps {
   open: boolean;
@@ -16,43 +17,21 @@ interface IProps {
 const LoginModal: React.FC<IProps> = ({ open, onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null); //
-  const loginApi = useApi("/user");
+  const [, error, , fetchLogin] = useAxios<string>(
+    "/user/login",
+    {
+      method: "post",
+      data: { username, password },
+    },
+    (resp) => onLogin?.(resp.data)
+  );
 
-  const handleLogin = async () => {
-    setError(null);
+  const handleLogin = () => {
     if (username === "local") {
-      onLogin && onLogin();
+      onLogin?.(username);
       return;
     }
-    const body = { username, password };
-    const { status, data: resp } = await loginApi.post<AxiosResponse<string>>(
-      "/login",
-      body
-    );
-    if (status === 200) {
-      const { code, data, msg } = resp;
-      if (Number(code) === 0) {
-        onLogin && onLogin(data);
-      } else {
-        setError(msg ?? "登录失败");
-      }
-    }
-    //     .then(({ data }) => data)
-    //     .then((data) => {
-    //       if (data.code === "0") {
-    //         onLogin && onLogin();
-    //       }
-    //     })
-    //     .catch((e: AxiosError) => {
-    //       console.log(e);
-    //       const { status } = e?.response || {};
-    //       if (status === 500) {
-    //         setError("请确保后端服务已开启");
-    //       } else {
-    //         setError(e.message);
-    //       }
-    //     });
+    fetchLogin();
   };
 
   return (
