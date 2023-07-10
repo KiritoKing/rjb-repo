@@ -17,6 +17,7 @@ const TablePreviewDialog: React.FC<IProps> = ({ open, onClose, data }) => {
     else return [];
   }, [data]);
   const [csvData] = useCsv(tmp);
+  console.log(csvData);
 
   return (
     <Modal open={open} onClose={onClose}>
