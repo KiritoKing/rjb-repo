@@ -7,7 +7,12 @@ interface IProps {
 
 const ModelList: React.FC<IProps> = ({ options }) => {
   return (
-    <RadioGroup name="models">
+    <RadioGroup
+      name="models"
+      onChange={(e) => {
+        console.log(e.target.value);
+      }}
+    >
       <List
         sx={{
           minWidth: 240,
@@ -17,7 +22,7 @@ const ModelList: React.FC<IProps> = ({ options }) => {
           "--ListItemDecorator-size": "32px",
         }}
       >
-        {options.map(({ name, description, id }) => {
+        {options.map(({ name, id }) => {
           return (
             <ListItem
               variant="outlined"

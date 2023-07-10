@@ -9,7 +9,7 @@ import { AxiosError } from "axios";
 
 interface IProps {
   open: boolean;
-  onLogin?: () => void;
+  onLogin?: (username?: string) => void;
   onRegister?: () => void;
 }
 
@@ -17,32 +17,42 @@ const LoginModal: React.FC<IProps> = ({ open, onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null); //
-  const api = useApi();
+  const loginApi = useApi("/user");
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setError(null);
     if (username === "local") {
       onLogin && onLogin();
       return;
     }
-    const req = { username, password };
-    api
-      .post("v1/login", req)
-      .then(({ data }) => data)
-      .then((data) => {
-        if (data.code === "0") {
-          onLogin && onLogin();
-        }
-      })
-      .catch((e: AxiosError) => {
-        console.log(e);
-        const { status } = e?.response || {};
-        if (status === 500) {
-          setError("请确保后端服务已开启");
-        } else {
-          setError(e.message);
-        }
-      });
+    const body = { username, password };
+    const { status, data: resp } = await loginApi.post<AxiosResponse<string>>(
+      "/login",
+      body
+    );
+    if (status === 200) {
+      const { code, data, msg } = resp;
+      if (Number(code) === 0) {
+        onLogin && onLogin(data);
+      } else {
+        setError(msg ?? "登录失败");
+      }
+    }
+    //     .then(({ data }) => data)
+    //     .then((data) => {
+    //       if (data.code === "0") {
+    //         onLogin && onLogin();
+    //       }
+    //     })
+    //     .catch((e: AxiosError) => {
+    //       console.log(e);
+    //       const { status } = e?.response || {};
+    //       if (status === 500) {
+    //         setError("请确保后端服务已开启");
+    //       } else {
+    //         setError(e.message);
+    //       }
+    //     });
   };
 
   return (

@@ -1,18 +1,27 @@
-import axios from "axios";
+import axios, { HeadersDefaults } from "axios";
 import { useMemo } from "react";
 
-const BASE_URL = "http://127.0.0.1:5173/api";
+const BASE_URL = "/api";
 
-export default function useApi(prefix?: string, method = "get") {
-  const url = prefix ? `${BASE_URL}/${prefix}` : BASE_URL;
+export default function useApi(
+  prefix?: string,
+  timeout = 1000,
+  headers: Partial<HeadersDefaults> = {}
+) {
+  const url = useMemo(() => {
+    const rawPrefix = prefix?.startsWith("/") ? prefix.slice(1) : prefix;
+    return prefix ? `${BASE_URL}/${rawPrefix}` : BASE_URL;
+  }, [prefix]);
+
   const instance = useMemo(
     () =>
       axios.create({
         baseURL: url,
-        timeout: 1000,
-        method,
+        timeout,
+        headers,
+        withCredentials: true,
       }),
-    [url, method]
+    [headers, timeout, url]
   );
   return instance;
 }
