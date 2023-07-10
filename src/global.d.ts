@@ -9,6 +9,7 @@ interface IModelParam {
   epoch: number;
   batchSize: number;
   learningRate: number;
+  windowSize: number;
   [key: string]: number | string;
 }
 
@@ -24,4 +25,10 @@ interface IStringDict {
 interface ITableData {
   columns?: string[];
   data: string[][];
+}
+
+interface AxiosResponse<T> {
+  code: number;
+  data: T;
+  msg?: string;
 }
