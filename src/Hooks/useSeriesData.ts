@@ -1,6 +1,11 @@
 import { SeriesOption } from "echarts";
 import { useMemo } from "react";
 
+/**
+ * 用于转换csv表格形式的数据为echarts折线图格式的数据
+ * @param rawData csv表格数据
+ * @returns 适用于echarts的数据
+ */
 export default function useSeriesData(rawData: ITableData) {
   return useMemo(() => {
     const transposed = [];

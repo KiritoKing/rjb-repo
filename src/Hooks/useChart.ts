@@ -13,6 +13,10 @@ const basicOption: echarts.EChartsOption = {
   // },
 };
 
+/**
+ * 初始化echarts图表，暴露出ref和setData
+ * @returns [ref, setData]: ref-绑定到chart容器DOM上，setData-设置chart的数据
+ */
 export default function useChart() {
   const ref = useRef<HTMLDivElement>(null);
   const chart = useRef<echarts.ECharts>();

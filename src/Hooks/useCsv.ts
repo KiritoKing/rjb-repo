@@ -56,6 +56,12 @@ async function readCsv(file: Blob, dillema = ","): Promise<ITableData | null> {
   });
 }
 
+/**
+ * 用于解析csv文件为表格数据
+ * @param files csv文件
+ * @param options 解析选项，包括分隔符和是否解析首行
+ * @returns [data, error]: data-解析后的表格数据，error-发生错误的行索引
+ */
 export default function useCsv(
   files: IFileInfo[],
   options: IOption = {

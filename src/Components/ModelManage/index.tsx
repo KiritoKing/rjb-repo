@@ -32,7 +32,7 @@ const ModelManage = () => {
         }
       }
     },
-    [modelApi, toast]
+    [modelApi]
   );
 
   useEffect(() => {
