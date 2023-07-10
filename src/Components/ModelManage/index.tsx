@@ -4,52 +4,32 @@ import ModelList from "./ModelList";
 import SectionCard from "../General/SectionCard";
 import SectionTitle from "../General/SectionTitle";
 import { Link } from "react-router-dom";
-import useApi from "@/Hooks/useApi";
-import { useCallback, useEffect, useState } from "react";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { toast } from "sonner";
 import _ from "lodash";
+import useLoadData from "@/Hooks/useLoadData";
 
 const PAGE_SIZE = 10;
 
 const ModelManage = () => {
-  const modelApi = useApi("/model");
-  const [models, setModels] = useState<IModelInfo[]>([]);
-
-  const handleRefresh = useCallback(
-    async (onLoad = false, page = 0, pageSize = PAGE_SIZE) => {
-      const { status, data: resp } = await modelApi.get<
-        AxiosResponse<IModelInfo[]>
-      >("/list", {
-        params: { pageNum: page, pageSize },
-      });
-      if (status === 200) {
-        const { code, data, msg } = resp;
-        if (code === 0) {
-          setModels(data);
-          if (!onLoad) toast.success("刷新成功");
-        } else {
-          toast.error(msg ?? "刷新失败");
-        }
-      }
-    },
-    [modelApi]
+  const [models, loading, fetchModel] = useLoadData<IModelInfo[]>(
+    "/model/list",
+    {
+      params: {
+        pageNum: 0,
+        pageSize: PAGE_SIZE,
+      },
+      successText: "获取模型列表成功",
+      errorText: "获取模型列表失败",
+      autoLoad: true,
+    }
   );
-
-  useEffect(() => {
-    handleRefresh(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <SectionCard>
       <Sheet sx={{ display: "flex", justifyContent: "space-between" }}>
         <SectionTitle title="模型管理" subTitle="Model Mangement" />
         <Sheet sx={{ display: "flex", gap: 2 }}>
-          <IconButton
-            onClick={() => _.throttle(handleRefresh)()}
-            variant="plain"
-          >
+          <IconButton onClick={() => _.throttle(fetchModel)()} variant="plain">
             <RefreshIcon />
           </IconButton>
           <Button to="train" component={Link} startDecorator={<AddIcon />}>

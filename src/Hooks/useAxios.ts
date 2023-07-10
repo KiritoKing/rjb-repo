@@ -14,10 +14,10 @@ export default function useAxios<T>(
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const fetchData = async () => {
+  const fetchData: () => Promise<boolean> = async () => {
     try {
       setLoading(true);
-      const { status, data, statusText } = await api.get<AxiosResponse<T>>(
+      const { status, data, statusText } = await api<AxiosResponse<T>>(
         url,
         options
       );
@@ -27,6 +27,8 @@ export default function useAxios<T>(
       } else {
         throw new Error(statusText);
       }
+      setLoading(false);
+      return true;
     } catch (error) {
       if (error instanceof Error) {
         if (error instanceof AxiosError && error.code === "ECONNABORTED") {
@@ -38,8 +40,8 @@ export default function useAxios<T>(
       } else {
         console.log("useAxios: 发生未知错误");
       }
-    } finally {
       setLoading(false);
+      return false;
     }
   };
 

@@ -2,7 +2,7 @@ import { List, ListItem, Radio, RadioGroup } from "@mui/joy";
 import React from "react";
 
 interface IProps {
-  options: IModelInfo[];
+  options?: IModelInfo[];
 }
 
 const ModelList: React.FC<IProps> = ({ options }) => {
@@ -22,7 +22,7 @@ const ModelList: React.FC<IProps> = ({ options }) => {
           "--ListItemDecorator-size": "32px",
         }}
       >
-        {options.map(({ name, id }) => {
+        {options?.map(({ name, id }) => {
           return (
             <ListItem
               variant="outlined"

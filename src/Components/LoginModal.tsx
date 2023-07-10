@@ -3,9 +3,7 @@ import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
 import Sheet from "@mui/joy/Sheet";
 import { Button, FormControl, FormLabel, Input, Typography } from "@mui/joy";
-import useApi from "@/Hooks/useApi";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import { AxiosError } from "axios";
 import useAxios from "@/Hooks/useAxios";
 
 interface IProps {
@@ -17,7 +15,7 @@ interface IProps {
 const LoginModal: React.FC<IProps> = ({ open, onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [, error, , fetchLogin] = useAxios<string>(
+  const [, error, loading, fetchLogin] = useAxios<string>(
     "/user/login",
     {
       method: "post",
@@ -99,7 +97,9 @@ const LoginModal: React.FC<IProps> = ({ open, onLogin }) => {
           <Sheet
             sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 2 }}
           >
-            <Button onClick={handleLogin}>登录</Button>
+            <Button disabled={loading} onClick={handleLogin}>
+              登录
+            </Button>
             <Button>注册</Button>
           </Sheet>
         </Sheet>

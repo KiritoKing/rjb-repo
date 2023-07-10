@@ -2,7 +2,6 @@ import { Button, Sheet } from "@mui/joy";
 import FileUpload from "./FileManage/FileUpload";
 import SectionCard from "./General/SectionCard";
 import SectionTitle from "./General/SectionTitle";
-import ModelConsole from "./ModelConsole";
 
 const ModelApply = () => {
   return (
