@@ -8,6 +8,7 @@ import useApi from "@/Hooks/useApi";
 import { useCallback, useEffect, useState } from "react";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { toast } from "sonner";
+import _ from "lodash";
 
 const PAGE_SIZE = 10;
 
@@ -45,7 +46,10 @@ const ModelManage = () => {
       <Sheet sx={{ display: "flex", justifyContent: "space-between" }}>
         <SectionTitle title="模型管理" subTitle="Model Mangement" />
         <Sheet sx={{ display: "flex", gap: 2 }}>
-          <IconButton onClick={() => handleRefresh()} variant="plain">
+          <IconButton
+            onClick={() => _.throttle(handleRefresh)()}
+            variant="plain"
+          >
             <RefreshIcon />
           </IconButton>
           <Button to="train" component={Link} startDecorator={<AddIcon />}>
