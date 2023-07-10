@@ -3,6 +3,7 @@ import UserProfile from "@/Components/UserProfile";
 import useLogin from "@/Hooks/useLogin";
 import { Sheet } from "@mui/joy";
 import { Outlet } from "react-router-dom";
+import { toast } from "sonner";
 
 const Layout = () => {
   const [logIn, setLogIn] = useLogin();
@@ -21,7 +22,13 @@ const Layout = () => {
     >
       <UserProfile />
       <Outlet />
-      <LoginModal open={!logIn} onLogin={() => setLogIn(true)} />
+      <LoginModal
+        open={!logIn}
+        onLogin={(name?: string) => {
+          toast.success("欢迎回来 " + name + "！");
+          setLogIn(true);
+        }}
+      />
     </Sheet>
   );
 };

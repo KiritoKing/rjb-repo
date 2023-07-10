@@ -6,6 +6,7 @@ const testParam: IModelParam = {
   epoch: 10,
   batchSize: 128,
   learningRate: 0.01,
+  windowSize: 10,
 };
 
 const ModelInfo = () => {
