@@ -1,20 +1,31 @@
 import { Sheet, Typography } from "@mui/joy";
 import UploadButton from "./UploadButton";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import FileList from "./FileList";
 import useCsv from "@/Hooks/useCsv";
 import useStore from "@/Hooks/useStore";
+import useAxios from "@/Hooks/useAxios";
+import useApi from "@/Hooks/useApi";
+import { toast } from "sonner";
 
 const FileUpload = () => {
-  const { csvFiles, pushCsv: appendCsv, removeCsv, setTableData } = useStore();
-  const [csvData] = useCsv(csvFiles);
-  useEffect(() => {
-    console.log(csvData);
-    setTableData(csvData);
-  }, [csvData, setTableData]);
+  const setTableData = useStore((state) => state.setTableData);
+  const [csvFiles, setCsvFiles] = useState<IFileInfo[]>([]);
+  const api = useApi();
 
-  const handleUpload = (file: File) => {
-    appendCsv({ title: file.name, blob: file });
+  const handleUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    const { status, data: resp } = await api.post<
+      AxiosResponse<UploadResponse>
+    >("model/fileUpload", formData);
+    if (status === 200) {
+      const { code, data, msg } = resp;
+      if (code !== 0 || !data) {
+        toast.error(`上传失败：${msg}`);
+        return;
+      }
+    }
   };
 
   return (
@@ -34,7 +45,7 @@ const FileUpload = () => {
           </Typography>
           <UploadButton onUpload={handleUpload} />
         </Sheet>
-        <FileList files={csvFiles} onDeleteItem={removeCsv} />
+        <FileList files={csvFiles} />
       </Sheet>
     </Sheet>
   );
