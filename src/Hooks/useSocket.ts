@@ -1,48 +1,67 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from "react";
-import { io } from "socket.io-client";
+import { Socket, io } from "socket.io-client";
 import dayjs from "dayjs";
 
-const SOCEKT_URL = "http://localhost:4567";
-
-export default function useSocket(url = SOCEKT_URL, autoConnect = false) {
-  const socket = useRef(io(url, { autoConnect }));
-  const [isConnected, setIsConnected] = useState(socket.current.connected);
+export default function useSocket() {
+  const socket = useRef<Socket | null>(null);
+  const [isConnected, setIsConnected] = useState(
+    socket.current?.connected ?? false
+  );
   const [latestMessage, setLatestMessage] = useState<unknown>(null);
   const [progress, setProgress] = useState<number>(0);
+  const [isFinished, setIsFinished] = useState<boolean>(false);
 
-  useEffect(() => {
+  const connect = (url: string) => {
+    socket.current = io(url, { autoConnect: false, reconnection: false });
+    socket.current.connect();
+    initSocket();
+  };
+
+  const initSocket = () => {
+    if (!socket.current) return;
     socket.current.on("connect", () => {
       setIsConnected(true);
-      setLatestMessage("Connected!");
+      setLatestMessage("[WebSocket] Connected!");
+      socket.current?.emit("run");
     });
     socket.current.on("disconnect", () => {
       setIsConnected(false);
       alert("Disconnected!");
     });
     socket.current.on("message", (data) => {
-      setLatestMessage(`[${dayjs().locale()}] ${data as string}`);
+      setLatestMessage(`[${dayjs().valueOf()}] ${data as string}`);
     });
-    socket.current.on("progress", (progress: number) => {
-      setProgress(progress);
+    socket.current.on("progress", (data: unknown) => {
+      if (Number.isNaN(data)) return;
+      const progress = Number(data);
+      if (progress < 1) setProgress(progress * 100);
+      else setProgress(progress);
     });
+    socket.current.on("done", () => {
+      setIsFinished(true);
+      setLatestMessage("[WebSocket] Finished!");
+      if (socket.current?.connected) socket.current?.disconnect();
+    });
+  };
+
+  // 组件注销时，关闭socket连接
+  useEffect(() => {
     return () => {
-      socket.current.off("connect");
-      socket.current.off("disconnect");
-      socket.current.off("message");
-      socket.current.off("progress");
+      socket.current?.disconnect();
+      socket.current?.off("connect");
+      socket.current?.off("disconnect");
+      socket.current?.off("message");
+      socket.current?.off("progress");
+      socket.current?.off("done");
     };
   }, []);
 
-  const handleSendMessage = (message: string) => {
-    socket.current.send(message);
-  };
-
   return {
     isConnected,
+    isFinished,
     latestMessage,
     progress,
-    sendMessage: handleSendMessage,
-    socket: socket.current,
+    connect,
   };
 }

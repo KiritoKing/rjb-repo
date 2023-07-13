@@ -22,7 +22,7 @@ export default function useLoadData<T>(
       successText && toast.success(successText);
     },
     () => {
-      console.log("REE");
+      console.error("Error:", error);
       errorText && toast.error(`${errorText}： ${error}`);
     }
   );
