@@ -6,7 +6,7 @@ import { toast } from "sonner";
 export default function useAxios<T>(
   url: string,
   options?: AxiosRequestConfig,
-  onSucess?: (data: AxiosResponse<T>) => void,
+  onSuccess?: (data: AxiosResponse<T>) => void,
   onError?: (error: Error) => void
 ) {
   const api = useApi();
@@ -14,16 +14,18 @@ export default function useAxios<T>(
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const fetchData: () => Promise<boolean> = async () => {
+  const fetchData: (payload?: unknown) => Promise<boolean> = async (
+    payload
+  ) => {
     try {
       setLoading(true);
-      const { status, data, statusText } = await api<AxiosResponse<T>>(
-        url,
-        options
-      );
+      const { status, data, statusText } = await api<AxiosResponse<T>>(url, {
+        data: payload,
+        ...options,
+      });
       if (status === 200) {
         setData(data.data);
-        onSucess?.(data);
+        onSuccess?.(data);
       } else {
         throw new Error(statusText);
       }

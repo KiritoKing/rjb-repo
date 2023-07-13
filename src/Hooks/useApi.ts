@@ -1,7 +1,7 @@
 import axios, { HeadersDefaults } from "axios";
 import { useMemo } from "react";
 
-const BASE_URL = "/api";
+export const BASE_API_URL = "/api";
 
 /**
  * 用于快速创建Axios实例，默认绑定到/api路径，带cookies
@@ -17,7 +17,7 @@ export default function useApi(
 ) {
   const url = useMemo(() => {
     const rawPrefix = prefix?.startsWith("/") ? prefix.slice(1) : prefix;
-    return prefix ? `${BASE_URL}/${rawPrefix}` : BASE_URL;
+    return prefix ? `${BASE_API_URL}/${rawPrefix}` : BASE_API_URL;
   }, [prefix]);
 
   const instance = useMemo(
