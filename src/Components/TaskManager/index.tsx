@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import TaskStatus, { TaskStatusType } from "./TaskStatus";
 import LogBox from "./LogBox";
 import useSocket from "@/Hooks/useSocket";
+import { BASE_API_URL } from "@/Hooks/useApi";
 
 const TaskManager = () => {
   const [running, setRunning] = useState(false);
@@ -25,8 +26,7 @@ const TaskManager = () => {
 
   const handleRunModel = () => {
     setRunning(true);
-    connect("http://localhost:4567");
-    // connect("http://192.168.173.159:5000");
+    connect("ws://192.168.173.159:4567");
   };
   return (
     <Sheet sx={{ px: 4 }}>
