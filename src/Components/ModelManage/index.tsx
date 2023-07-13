@@ -27,7 +27,7 @@ const ModelManage = () => {
   return (
     <SectionCard>
       <Sheet sx={{ display: "flex", justifyContent: "space-between" }}>
-        <SectionTitle title="模型管理" subTitle="Model Mangement" />
+        <SectionTitle title="模型管理" subTitle="Model Management" />
         <Sheet sx={{ display: "flex", gap: 2 }}>
           <IconButton onClick={() => _.throttle(fetchModel)()} variant="plain">
             <RefreshIcon />

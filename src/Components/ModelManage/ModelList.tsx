@@ -22,33 +22,38 @@ const ModelList: React.FC<IProps> = ({ options }) => {
           "--ListItemDecorator-size": "32px",
         }}
       >
-        {options?.map(({ name, id }) => {
-          return (
-            <ListItem
-              variant="outlined"
-              key={id}
-              sx={{ boxShadow: "sm", bgcolor: "background.body" }}
-            >
-              <Radio
-                overlay
-                value={id}
-                label={name}
-                sx={{ flexGrow: 1, flexDirection: "row-reverse" }}
-                slotProps={{
-                  action: ({ checked }) => ({
-                    sx: (theme) => ({
-                      ...(checked && {
-                        inset: -1,
-                        border: "2px solid",
-                        borderColor: theme.vars.palette.primary[500],
+        {options?.length && options.length > 0 ? (
+          options.map(({ name, id }) => {
+            return (
+              <ListItem
+                variant="outlined"
+                key={id}
+                sx={{ boxShadow: "sm", bgcolor: "background.body" }}
+              >
+                <Radio
+                  overlay
+                  value={id}
+                  label={name}
+                  sx={{ flexGrow: 1, flexDirection: "row-reverse" }}
+                  slotProps={{
+                    action: ({ checked }) => ({
+                      sx: (theme) => ({
+                        ...(checked && {
+                          inset: -1,
+                          border: "2px solid",
+                          borderColor: theme.vars.palette.primary[500],
+                        }),
                       }),
                     }),
-                  }),
-                }}
-              />
-            </ListItem>
-          );
-        })}
+                  }}
+                />
+              </ListItem>
+            );
+          })
+        ) : (
+          <ListItem>暂无可用模型</ListItem>
+        )}
+        {}
       </List>
     </RadioGroup>
   );
