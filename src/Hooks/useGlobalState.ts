@@ -3,10 +3,7 @@ import { create } from "zustand";
 interface IStore {
   username?: string;
   setUsername: (username: string) => void;
-  csvFiles: CsvFileItem[];
   tableData: ITableData;
-  pushCsv: (file: CsvFileItem) => void;
-  removeCsv: (index: number) => void;
   pushTableData: (data: ITableData) => void;
   clearTableData: () => void;
   setTableData: (data: ITableData) => void;
@@ -18,17 +15,10 @@ const useGlobalState = create<IStore>()((set) => {
     setUsername(username) {
       set(() => ({ username }));
     },
-    csvFiles: [],
     tableData: {
       columns: [],
       data: [],
     },
-    pushCsv: (file) =>
-      set((state) => ({ csvFiles: [...state.csvFiles, file] })),
-    removeCsv: (index) =>
-      set((state) => ({
-        csvFiles: state.csvFiles.filter((_, i) => i !== index),
-      })),
     pushTableData: (data) => {
       set((state) => ({
         tableData: {
