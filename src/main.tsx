@@ -30,7 +30,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <CssVarsProvider>
-      <Toaster closeButton richColors position="top-left" />
+      <Toaster duration={1000} closeButton richColors position="top-left" />
       <RouterProvider router={router} />
     </CssVarsProvider>
   </React.StrictMode>
