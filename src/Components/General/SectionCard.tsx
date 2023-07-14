@@ -8,8 +8,8 @@ const SectionCard: React.FC<PropsWithChildren> = ({ children }) => {
       sx={{
         width: "100%",
         p: 5,
-        backdropFilter: "blur(10px)",
-        backgroundColor: "rgba(255, 255, 255, 0.5)",
+        // backdropFilter: "blur(10px)",
+        // backgroundColor: "rgba(255, 255, 255, 0.5)",
       }}
     >
       <Stack spacing={2} sx={{ width: "100%" }}>

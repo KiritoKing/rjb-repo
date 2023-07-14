@@ -11,13 +11,7 @@ import { useImmer } from "use-immer";
 
 const FileManager = () => {
   // const setTableData = useStore((state) => state.setTableData);
-  const [csvFiles, setCsvFiles] = useImmer<CsvFileItem[]>([
-    {
-      title: "wrong example",
-      blob: new File(["wrong example"], "wrong example.csv"),
-      status: "error",
-    },
-  ]);
+  const [csvFiles, setCsvFiles] = useImmer<CsvFileItem[]>([]);
 
   const appendCsv = useCallback(
     (raw: File) => {
