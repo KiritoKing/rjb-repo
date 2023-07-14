@@ -1,10 +1,10 @@
-import useStore from "@/Hooks/useStore";
+import useGlobalState from "@/Hooks/useGlobalState";
 import SectionCard from "./General/SectionCard";
 import SectionTitle from "./General/SectionTitle";
 import LineChart from "./LineChart";
 
 const ResultView = () => {
-  const { tableData } = useStore();
+  const { tableData } = useGlobalState();
   return (
     <SectionCard>
       <SectionTitle title="结果预览" subTitle="Result Preview" />

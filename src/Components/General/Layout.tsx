@@ -1,12 +1,12 @@
 import LoginModal from "@/Components/LoginModal";
 import UserProfile from "@/Components/UserProfile";
-import useLogin from "@/Hooks/useLogin";
+import useGlobalState from "@/Hooks/useGlobalState";
 import { Sheet } from "@mui/joy";
 import { Outlet } from "react-router-dom";
 import { toast } from "sonner";
 
 const Layout = () => {
-  const [logIn, setLogIn] = useLogin();
+  const logIn = useGlobalState((s) => !!s.username);
 
   return (
     <Sheet
@@ -26,7 +26,6 @@ const Layout = () => {
         open={!logIn}
         onLogin={(name?: string) => {
           toast.success("欢迎回来 " + name + "！");
-          setLogIn(true);
         }}
       />
     </Sheet>

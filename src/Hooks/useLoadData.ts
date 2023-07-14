@@ -2,6 +2,7 @@ import { AxiosRequestConfig } from "axios";
 import useAxios from "./useAxios";
 import { toast } from "sonner";
 import { useEffect } from "react";
+import useGlobalState from "./useGlobalState";
 
 export default function useLoadData<T>(
   url: string,
@@ -12,6 +13,7 @@ export default function useLoadData<T>(
   }
 ) {
   const { autoLoad, successText, errorText, ...rest } = options ?? {};
+  const isLogin = useGlobalState((state) => !!state.username);
   const [data, error, loading, execute] = useAxios<T>(
     url,
     {
@@ -26,8 +28,11 @@ export default function useLoadData<T>(
       errorText && toast.error(`${errorText}： ${error}`);
     }
   );
+
   useEffect(() => {
     autoLoad && execute();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoLoad, isLogin]);
+
   return [data, loading, execute] as const;
 }

@@ -1,6 +1,8 @@
 import { create } from "zustand";
 
 interface IStore {
+  username?: string;
+  setUsername: (username: string) => void;
   csvFiles: CsvFileItem[];
   tableData: ITableData;
   pushCsv: (file: CsvFileItem) => void;
@@ -10,8 +12,12 @@ interface IStore {
   setTableData: (data: ITableData) => void;
 }
 
-const useStore = create<IStore>()((set) => {
+// TODO: 用immer和slice改造全局状态
+const useGlobalState = create<IStore>()((set) => {
   return {
+    setUsername(username) {
+      set(() => ({ username }));
+    },
     csvFiles: [],
     tableData: {
       columns: [],
@@ -45,4 +51,4 @@ const useStore = create<IStore>()((set) => {
   };
 });
 
-export default useStore;
+export default useGlobalState;

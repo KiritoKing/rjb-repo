@@ -2,6 +2,7 @@ import { AxiosError, AxiosRequestConfig } from "axios";
 import { useState } from "react";
 import useApi from "./useApi";
 import { toast } from "sonner";
+import useGlobalState from "./useGlobalState";
 
 export default function useAxios<T>(
   url: string,
@@ -13,10 +14,15 @@ export default function useAxios<T>(
   const [data, setData] = useState<T>();
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
+  const isLogin = useGlobalState((state) => !!state.username);
 
   const fetchData: (payload?: unknown) => Promise<boolean> = async (
     payload
   ) => {
+    if (!isLogin) {
+      // 若未登录则不获取数据
+      return false;
+    }
     try {
       setLoading(true);
       const { status, data, statusText } = await api<AxiosResponse<T>>(url, {

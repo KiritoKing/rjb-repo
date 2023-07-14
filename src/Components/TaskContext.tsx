@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import FileManager from "./FileManage";
 import TaskManager from "./TaskManager";
 
-const TaskCombination = () => {
+const TaskContext = () => {
   const [csvFiles, setCsvFiles] = useState<CsvFileItem[]>([]);
 
   return (
@@ -14,4 +14,4 @@ const TaskCombination = () => {
   );
 };
 
-export default TaskCombination;
+export default TaskContext;

@@ -5,6 +5,7 @@ import Sheet from "@mui/joy/Sheet";
 import { Button, FormControl, FormLabel, Input, Typography } from "@mui/joy";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import useAxios from "@/Hooks/useAxios";
+import useGlobalState from "@/Hooks/useGlobalState";
 
 interface IProps {
   open: boolean;
@@ -15,18 +16,23 @@ interface IProps {
 const LoginModal: React.FC<IProps> = ({ open, onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const setGlobalUsername = useGlobalState((state) => state.setUsername);
   const [, error, loading, fetchLogin] = useAxios<string>(
     "/user/login",
     {
       method: "post",
       data: { username, password },
     },
-    (resp) => onLogin?.(resp.data)
+    (resp) => {
+      onLogin?.(resp.data);
+      setGlobalUsername(resp.data ?? "User");
+    }
   );
 
   const handleLogin = () => {
     if (username === "local") {
       onLogin?.(username);
+      setGlobalUsername(username);
       return;
     }
     fetchLogin();

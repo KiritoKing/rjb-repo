@@ -3,7 +3,7 @@ import UploadButton from "./UploadButton";
 import { useCallback, useEffect, useState } from "react";
 import FileList from "./FileList";
 import useCsv from "@/Hooks/useCsv";
-import useStore from "@/Hooks/useStore";
+import useGlobalState from "@/Hooks/useGlobalState";
 import useAxios from "@/Hooks/useAxios";
 import useApi from "@/Hooks/useApi";
 import { toast } from "sonner";

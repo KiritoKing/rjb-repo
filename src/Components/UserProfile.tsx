@@ -1,11 +1,11 @@
+import useGlobalState from "@/Hooks/useGlobalState";
 import { Avatar, Card, Typography } from "@mui/joy";
 
 const UserProfile = () => {
+  const username = useGlobalState((s) => s.username);
+
   return (
     <Card
-      onClick={() => {
-        console.log("User Profile");
-      }}
       component="button"
       variant="outlined"
       sx={{
@@ -27,7 +27,7 @@ const UserProfile = () => {
       }}
     >
       <Avatar size="sm" />
-      <Typography component="span">User</Typography>
+      <Typography component="span">{username}</Typography>
     </Card>
   );
 };
