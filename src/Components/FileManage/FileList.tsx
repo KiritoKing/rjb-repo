@@ -5,6 +5,7 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import React, { FC, useMemo, useState } from "react";
 import { keyframes } from "@emotion/react";
 import TablePreviewDialog from "./TablePreviewDialog";
+import { toast } from "sonner";
 
 interface IItemProps {
   file: CsvFileItem;
@@ -104,7 +105,11 @@ const FileList: FC<IListProps> = ({ files, onDeleteItem }) => {
 
   const handlePreivew = (index: number) => {
     setCurrentFile(files[index]);
-    setPreviewDialogOpen(true);
+    if (files[index].previewData) {
+      setPreviewDialogOpen(true);
+    } else {
+      toast.error("预览打开失败：无数据回传");
+    }
   };
 
   if (files.length === 0) {
@@ -133,11 +138,11 @@ const FileList: FC<IListProps> = ({ files, onDeleteItem }) => {
               onDelete={() => onDeleteItem?.(index)}
               onPreview={() => handlePreivew(index)}
             />
-            {/* <TablePreviewDialog
+            <TablePreviewDialog
               open={previewDialogOpen}
               data={currentFile}
               onClose={() => setPreviewDialogOpen(false)}
-            /> */}
+            />
           </React.Fragment>
         );
       })}

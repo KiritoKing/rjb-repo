@@ -12,12 +12,7 @@ interface IProps {
 }
 
 const TablePreviewDialog: React.FC<IProps> = ({ open, onClose, data }) => {
-  const tmp = useMemo(() => {
-    if (data) return [data];
-    else return [];
-  }, [data]);
-  const [csvData] = useCsv(tmp);
-  console.log(csvData);
+  const { previewData } = data ?? {};
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -40,11 +35,11 @@ const TablePreviewDialog: React.FC<IProps> = ({ open, onClose, data }) => {
             <caption>{data?.title} 数据预览（前100条数据）</caption>
             <thead>
               <tr>
-                {csvData.columns?.map((column, i) => (
+                {previewData?.columns?.map((column, i) => (
                   <th key={i}>{column}</th>
                 ))}
               </tr>
-              {csvData.data.slice(0, 100).map((row, i) => {
+              {previewData?.data.slice(0, 100).map((row, i) => {
                 return (
                   <tr key={i}>
                     {row.map((cell) => (
