@@ -1,4 +1,4 @@
-import { List, ListItem, Radio, RadioGroup } from "@mui/joy";
+import { List, ListItem, Radio, RadioGroup, Typography } from "@mui/joy";
 import React from "react";
 
 interface IProps {
@@ -51,7 +51,9 @@ const ModelList: React.FC<IProps> = ({ options }) => {
             );
           })
         ) : (
-          <ListItem>暂无可用模型</ListItem>
+          <ListItem sx={{ m: "20px auto" }}>
+            <Typography>暂无可用模型</Typography>
+          </ListItem>
         )}
         {}
       </List>
