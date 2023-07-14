@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import _ from "lodash";
 import useLoadData from "@/Hooks/useLoadData";
+import { useEffect } from "react";
 
 const PAGE_SIZE = 10;
 

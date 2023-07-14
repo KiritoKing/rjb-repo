@@ -4,7 +4,7 @@ import { IconButton, Sheet } from "@mui/joy";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 import ModelInfo from "@/Components/ModelManage/ModelInfo";
-import FileUpload from "@/Components/FileManage/FileUpload";
+import FileManager from "@/Components/FileManage";
 
 const Train = () => {
   const nav = useNavigate();
@@ -29,7 +29,7 @@ const Train = () => {
         <SectionTitle title="训练模型" subTitle="Train Model" />
       </Sheet>
       <ModelInfo />
-      <FileUpload />
+      <FileManager />
     </SectionCard>
   );
 };

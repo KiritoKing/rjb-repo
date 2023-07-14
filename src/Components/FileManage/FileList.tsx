@@ -2,21 +2,53 @@ import { Card, IconButton, Stack, Typography } from "@mui/joy";
 import FilePresentIcon from "@mui/icons-material/FilePresent";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import React, { FC, useState } from "react";
+import React, { FC, useMemo, useState } from "react";
+import { keyframes } from "@emotion/react";
 import TablePreviewDialog from "./TablePreviewDialog";
 
 interface IItemProps {
-  file: IFileInfo;
+  file: CsvFileItem;
   onDelete?: () => void;
   onPreview?: () => void;
 }
 
 interface IListProps {
-  files: IFileInfo[];
+  files: CsvFileItem[];
   onDeleteItem?: (index: number) => void;
 }
 
+const blink = keyframes`
+  0% { border-color: #f3f3f3; } /* 边框的初始颜色 */
+  50% { border-color: #3498db; } /* 边框的中间颜色 */
+  100% { border-color: #f3f3f3; } /* 边框的最终颜色 */`;
+
 const FileItem: FC<IItemProps> = ({ file, onDelete, onPreview }) => {
+  const borderColor = useMemo(() => {
+    switch (file.status) {
+      case "error":
+        return "#d63031";
+      case "pending":
+        return "#3498db";
+      case "ok":
+        return "#49996b";
+      default:
+        return "gray";
+    }
+  }, [file.status]);
+
+  const textColor = useMemo(() => {
+    switch (file.status) {
+      case "error":
+        return "#d63031";
+      case "pending":
+        return "#3498db";
+      case "ok":
+        return "#1c3b29";
+      default:
+        return "gray";
+    }
+  }, [file.status]);
+
   return (
     <Card
       variant="outlined"
@@ -26,6 +58,10 @@ const FileItem: FC<IItemProps> = ({ file, onDelete, onPreview }) => {
         mb: 1,
         flexDirection: "row",
         alignItems: "center",
+        border: "2px solid",
+        borderColor: borderColor,
+        animation:
+          file.status === "pending" ? `${blink} 2s linear infinite` : "",
       }}
     >
       <Typography
@@ -39,6 +75,7 @@ const FileItem: FC<IItemProps> = ({ file, onDelete, onPreview }) => {
           px: 1,
           flex: 1,
           cursor: "pointer",
+          color: textColor,
         }}
       >
         <FilePresentIcon sx={{ mr: 1 }} />
@@ -48,7 +85,7 @@ const FileItem: FC<IItemProps> = ({ file, onDelete, onPreview }) => {
         onClick={onDelete}
         variant="plain"
         sx={{
-          color: "gray",
+          color: textColor,
           ":hover": {
             backgroundColor: "transparent",
             color: "#d63031",
@@ -63,7 +100,7 @@ const FileItem: FC<IItemProps> = ({ file, onDelete, onPreview }) => {
 
 const FileList: FC<IListProps> = ({ files, onDeleteItem }) => {
   const [previewDialogOpen, setPreviewDialogOpen] = useState(false);
-  const [currentFile, setCurrentFile] = useState<IFileInfo>();
+  const [currentFile, setCurrentFile] = useState<CsvFileItem>();
 
   const handlePreivew = (index: number) => {
     setCurrentFile(files[index]);
@@ -96,11 +133,11 @@ const FileList: FC<IListProps> = ({ files, onDeleteItem }) => {
               onDelete={() => onDeleteItem?.(index)}
               onPreview={() => handlePreivew(index)}
             />
-            <TablePreviewDialog
+            {/* <TablePreviewDialog
               open={previewDialogOpen}
               data={currentFile}
               onClose={() => setPreviewDialogOpen(false)}
-            />
+            /> */}
           </React.Fragment>
         );
       })}

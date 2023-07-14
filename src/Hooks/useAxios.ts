@@ -23,6 +23,9 @@ export default function useAxios<T>(
         data: payload,
         ...options,
       });
+
+      // console.log(data);
+
       if (status === 200) {
         setData(data.data);
         onSuccess?.(data);

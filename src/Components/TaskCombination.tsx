@@ -1,14 +1,14 @@
 import { Sheet } from "@mui/joy";
 import React, { useState } from "react";
-import FileUpload from "./FileManage/FileUpload";
+import FileManager from "./FileManage";
 import TaskManager from "./TaskManager";
 
 const TaskCombination = () => {
-  const [csvFiles, setCsvFiles] = useState<IFileInfo[]>([]);
+  const [csvFiles, setCsvFiles] = useState<CsvFileItem[]>([]);
 
   return (
     <Sheet>
-      <FileUpload />
+      <FileManager />
       <TaskManager />
     </Sheet>
   );

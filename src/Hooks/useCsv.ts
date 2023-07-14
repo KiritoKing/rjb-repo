@@ -63,7 +63,7 @@ async function readCsv(file: Blob, dillema = ","): Promise<ITableData | null> {
  * @returns [data, error]: data-解析后的表格数据，error-发生错误的行索引
  */
 export default function useCsv(
-  files: IFileInfo[],
+  files: CsvFileItem[],
   options: IOption = {
     dillema: ",",
     withColumn: true,

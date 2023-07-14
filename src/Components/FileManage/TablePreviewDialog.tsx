@@ -7,7 +7,7 @@ import useCsv from "@/Hooks/useCsv";
 
 interface IProps {
   open: boolean;
-  data?: IFileInfo;
+  data?: CsvFileItem;
   onClose?: () => void;
 }
 

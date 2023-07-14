@@ -1,9 +1,9 @@
 import { create } from "zustand";
 
 interface IStore {
-  csvFiles: IFileInfo[];
+  csvFiles: CsvFileItem[];
   tableData: ITableData;
-  pushCsv: (file: IFileInfo) => void;
+  pushCsv: (file: CsvFileItem) => void;
   removeCsv: (index: number) => void;
   pushTableData: (data: ITableData) => void;
   clearTableData: () => void;
