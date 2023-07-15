@@ -19,7 +19,7 @@ export default function useAxios<T>(
   const fetchData: (payload?: unknown) => Promise<boolean> = async (
     payload
   ) => {
-    if (!isLogin) {
+    if (!isLogin && url !== "/user/login") {
       // 若未登录则不获取数据
       return false;
     }

@@ -25,7 +25,9 @@ const LoginModal: React.FC<IProps> = ({ open, onLogin }) => {
     },
     (resp) => {
       onLogin?.(resp.data);
-      setGlobalUsername(resp.data ?? "User");
+      setGlobalUsername(
+        resp.data?.length ?? 0 > 0 ? (resp.data as string) : "User"
+      );
     }
   );
 
