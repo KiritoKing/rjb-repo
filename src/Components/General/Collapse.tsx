@@ -1,11 +1,5 @@
 import { styled } from "@mui/joy";
-import React, {
-  FC,
-  PropsWithChildren,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { FC, PropsWithChildren, useEffect, useState } from "react";
 
 const Container = styled("div")`
   overflow-y: scroll;
@@ -19,7 +13,7 @@ const Collapse: FC<
     collapseHeight?: string;
     expandHeight?: string;
   }>
-> = ({ open, collapseHeight = "0px", expandHeight = "100px", children }) => {
+> = ({ open, collapseHeight = "0px", expandHeight = "500px", children }) => {
   const [childHeight, setChildHeight] = useState("0");
 
   useEffect(() => {

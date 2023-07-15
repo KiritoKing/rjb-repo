@@ -6,12 +6,17 @@ import { Link } from "react-router-dom";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import _ from "lodash";
 import useLoadData from "@/Hooks/useLoadData";
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import LoadingScreen from "../General/LoadingScreen";
+import useGlobalState from "@/Hooks/useGlobalState";
 
 const PAGE_SIZE = 10;
 
-const ModelManager = () => {
+const ModelManager: FC<{
+  onChange?: (id: string) => void;
+}> = ({ onChange }) => {
+  const isLogin = useGlobalState((state) => !!state.username);
+
   const [models, loading, fetchModel] = useLoadData<IModelInfo[]>(
     "/model/list",
     {
@@ -24,6 +29,10 @@ const ModelManager = () => {
     }
   );
 
+  useEffect(() => {
+    fetchModel();
+  }, [isLogin]);
+
   return (
     <Sheet sx={{ px: 2, my: 2 }}>
       <Sheet sx={{ display: "flex", flexDirection: "row-reverse" }}>
@@ -32,7 +41,7 @@ const ModelManager = () => {
         </IconButton>
       </Sheet>
       <LoadingScreen loading={loading}>
-        <ModelList options={models} />
+        <ModelList onChange={onChange} options={models} />
       </LoadingScreen>
     </Sheet>
   );

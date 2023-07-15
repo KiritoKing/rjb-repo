@@ -7,9 +7,11 @@ interface IProps {
 }
 
 const LineChart: FC<IProps> = ({ data }) => {
-  const [chartRef, setData] = useChart();
+  // TODO: 根据数据大小选择显示密度
+  const [chartRef, setData] = useChart(4);
 
   useEffect(() => {
+    console.log(data);
     setData(data);
   }, [data, setData]);
 

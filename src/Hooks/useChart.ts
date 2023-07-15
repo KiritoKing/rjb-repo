@@ -17,7 +17,7 @@ const basicOption: echarts.EChartsOption = {
  * 初始化echarts图表，暴露出ref和setData
  * @returns [ref, setData]: ref-绑定到chart容器DOM上，setData-设置chart的数据
  */
-export default function useChart() {
+export default function useChart(density: number = DATA_DENSITY) {
   const ref = useRef<HTMLDivElement>(null);
   const chart = useRef<echarts.ECharts>();
   // 初始化chart
@@ -44,7 +44,7 @@ export default function useChart() {
     const sampledData = [
       data.columns,
       ...data.data
-        .filter((_, i) => i % DATA_DENSITY === 0)
+        .filter((_, i) => i % density === 0)
         .map((row) => {
           return row.map((cell, index) => (index === 0 ? cell : Number(cell)));
         }),

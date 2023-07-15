@@ -1,16 +1,16 @@
 import { Sheet, Typography } from "@mui/joy";
 import UploadButton from "./UploadButton";
-import { useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import FileList from "./FileList";
-import useCsv from "@/Hooks/useCsv";
 import useGlobalState from "@/Hooks/useGlobalState";
-import useAxios from "@/Hooks/useAxios";
 import useApi from "@/Hooks/useApi";
 import { toast } from "sonner";
 import { useImmer } from "use-immer";
 
-const FileManager = () => {
-  // const setTableData = useStore((state) => state.setTableData);
+const FileManager: FC<{
+  onChange?: (ready: boolean, setId?: string) => void;
+}> = ({ onChange }) => {
+  const setTableData = useGlobalState((state) => state.setTableData);
   const [csvFiles, setCsvFiles] = useImmer<CsvFileItem[]>([]);
 
   const appendCsv = useCallback(
@@ -31,6 +31,7 @@ const FileManager = () => {
 
   const handleUpload = async (file: File) => {
     appendCsv(file);
+    onChange?.(false);
     // 上传文件
     const formData = new FormData();
     formData.append("file", file);
@@ -43,6 +44,7 @@ const FileManager = () => {
         if (code !== 0 || !data) {
           throw new Error(msg);
         } else {
+          console.log(data.merged);
           setCsvFiles((draft) => {
             draft.forEach((item) => {
               if (item.blob === file) {
@@ -55,6 +57,8 @@ const FileManager = () => {
               }
             });
           });
+          setTableData({ columns: data.columns, data: data.merged });
+          onChange?.(true, data.setId);
           toast.success("上传成功");
         }
       }

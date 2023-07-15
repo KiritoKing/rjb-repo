@@ -3,16 +3,12 @@ import React from "react";
 
 interface IProps {
   options?: IModelInfo[];
+  onChange?: (id: string) => void;
 }
 
-const ModelList: React.FC<IProps> = ({ options }) => {
+const ModelList: React.FC<IProps> = ({ options, onChange }) => {
   return (
-    <RadioGroup
-      name="models"
-      onChange={(e) => {
-        console.log(e.target.value);
-      }}
-    >
+    <RadioGroup name="models" onChange={(e) => onChange?.(e.target.value)}>
       <List
         sx={{
           minWidth: 240,

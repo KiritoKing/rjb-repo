@@ -6,8 +6,29 @@ import { Link } from "react-router-dom";
 import SectionCard from "@/Components/General/SectionCard";
 import FileManager from "@/Components/FileManage";
 import TaskManager from "@/Components/TaskManager";
+import { useEffect, useState } from "react";
+import LineChart from "@/Components/LineChart";
+import useGlobalState from "@/Hooks/useGlobalState";
 
 const Main = () => {
+  const [setId, setSetId] = useState<string>();
+  const [modelId, setModelId] = useState<string>();
+  const tableData = useGlobalState((state) => state.tableData);
+  const setTableData = useGlobalState((state) => state.setTableData);
+
+  useEffect(() => {
+    return () => setTableData();
+  }, [setTableData]);
+
+  const handleFileChange = (ready: boolean, setId?: string) => {
+    setSetId(setId);
+  };
+
+  const handleModelChange = (modelId: string) => {
+    setModelId(modelId);
+    console.log(modelId);
+  };
+
   return (
     <>
       <SectionCard>
@@ -17,13 +38,22 @@ const Main = () => {
             训练模型
           </Button>
         </Sheet>
-        <ModelManager />
+        <ModelManager onChange={handleModelChange} />
       </SectionCard>
 
       <SectionCard>
         <SectionTitle title="模型应用" subTitle="Model Apply" />
-        <FileManager />
-        <TaskManager />
+        <FileManager onChange={handleFileChange} />
+        <TaskManager
+          canRun={!!setId && !!modelId}
+          setId={setId}
+          modelId={modelId}
+        />
+      </SectionCard>
+
+      <SectionCard>
+        <SectionTitle title="结果预览" subTitle="Result Preview" />
+        <LineChart data={tableData} />
       </SectionCard>
     </>
   );
