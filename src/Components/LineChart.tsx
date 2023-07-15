@@ -1,5 +1,5 @@
 import useChart from "@/Hooks/useChart";
-import { Sheet } from "@mui/joy";
+import { Sheet, Typography } from "@mui/joy";
 import { FC, useEffect } from "react";
 
 interface IProps {
@@ -16,17 +16,28 @@ const LineChart: FC<IProps> = ({ data }) => {
   }, [data, setData]);
 
   return (
-    <Sheet
-      ref={chartRef}
-      sx={{
-        width: "100%",
-        height: "400px",
-        my: 2,
-        borderRadius: 2,
-      }}
-    >
-      OverviewChart
-    </Sheet>
+    <>
+      <Sheet
+        ref={chartRef}
+        sx={{
+          display: data.data.length > 0 ? "block" : "none",
+          width: "100%",
+          height: "400px",
+          my: 2,
+          borderRadius: 2,
+        }}
+      >
+        OverviewChart
+      </Sheet>
+      <Sheet
+        sx={{
+          display: data.data.length > 0 ? "none" : "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Typography sx={{ py: 8 }}>暂无数据 :（</Typography>
+      </Sheet>
+    </>
   );
 };
 

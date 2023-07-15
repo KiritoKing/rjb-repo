@@ -7,7 +7,7 @@ type State = {
 };
 
 type Actions = {
-  setUsername: (username: string) => void;
+  setUsername: (username?: string) => void;
   pushTableData: (data: TableRow[]) => void;
   setTableData: (data?: ITableData) => void;
 };

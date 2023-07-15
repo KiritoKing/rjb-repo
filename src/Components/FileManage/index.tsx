@@ -86,6 +86,7 @@ const FileManager: FC<{
       toast.success("删除成功");
     } else {
       try {
+        // TODO: remove完后获取新的merged
         const { status, data: resp } = await api.post<AxiosResponse<null>>(
           "model/fileRemove",
           {},

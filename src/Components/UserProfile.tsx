@@ -9,11 +9,28 @@ import {
 } from "@mui/joy";
 import { useRef, useState } from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
+import useAxios from "@/Hooks/useAxios";
+import { toast } from "sonner";
 
 const UserProfile = () => {
   const username = useGlobalState((s) => s.username);
+  const setUsername = useGlobalState((s) => s.setUsername);
   const ref = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [, error, , fetchLogout] = useAxios<null>(
+    "/user/logout",
+    {
+      method: "post",
+    },
+    (resp) => {
+      if (resp.code === 0) {
+        setUsername(undefined);
+        toast.success("登出成功！");
+      } else {
+        toast.error("登出失败: " + error);
+      }
+    }
+  );
 
   const handleClose = () => setMenuOpen(false);
   const handleOpen = () => setMenuOpen(true);
@@ -51,7 +68,7 @@ const UserProfile = () => {
         <Typography component="span">{username}</Typography>
       </Card>
       <Menu open={menuOpen} onClose={handleClose} anchorEl={ref.current}>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={() => fetchLogout()}>
           <ListItemDecorator>
             <LogoutIcon />
           </ListItemDecorator>
