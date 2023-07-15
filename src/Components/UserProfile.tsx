@@ -7,14 +7,17 @@ import {
   MenuItem,
   Typography,
 } from "@mui/joy";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import useAxios from "@/Hooks/useAxios";
 import { toast } from "sonner";
+import _ from "lodash";
+import useClientWidth from "@/Hooks/useClientWidth";
 
 const UserProfile = () => {
   const username = useGlobalState((s) => s.username);
   const setUsername = useGlobalState((s) => s.setUsername);
+  const clientWidth = useClientWidth();
   const ref = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [, error, , fetchLogout] = useAxios<null>(
@@ -49,8 +52,8 @@ const UserProfile = () => {
         sx={{
           color: "#99999",
           borderRadius: "50px",
-          px: 3,
-          py: 1,
+          px: clientWidth >= 700 ? 3 : 0,
+          py: clientWidth >= 700 ? 1 : 0,
           width: "fit-content",
           height: "fit-content",
           position: "fixed",
@@ -62,10 +65,13 @@ const UserProfile = () => {
           alignItems: "center",
           gap: 1,
           flexDirection: "row",
+          zIndex: 100,
         }}
       >
         <Avatar size="sm" />
-        <Typography component="span">{username}</Typography>
+        {clientWidth >= 700 && (
+          <Typography component="span">{username}</Typography>
+        )}
       </Card>
       <Menu open={menuOpen} onClose={handleClose} anchorEl={ref.current}>
         <MenuItem onClick={() => fetchLogout()}>

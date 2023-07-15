@@ -31,6 +31,7 @@ const ModelManager: FC<{
 
   useEffect(() => {
     fetchModel();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogin]);
 
   return (

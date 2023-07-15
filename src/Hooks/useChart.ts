@@ -25,13 +25,18 @@ export default function useChart(density: number = DATA_DENSITY) {
     if (!ref.current) return;
     echarts.dispose(ref.current); // 先释放之前的内容
     chart.current = echarts.init(ref.current);
-    window.addEventListener("resize", () =>
-      _.debounce(() => chart.current?.resize(), 100)
-    ); // 响应容器大小变化
+    window.addEventListener("resize", () => {
+      const fn = _.debounce(() => chart.current?.resize(), 100);
+      fn();
+    }); // 响应容器大小变化
     chart.current.setOption({
       ...basicOption,
     });
   }, []);
+  useEffect(() => {
+    if (!chart.current) return;
+    chart.current.resize();
+  }, [ref.current?.clientWidth, ref.current?.clientHeight]);
 
   const setData = useCallback((data: ITableData) => {
     if (!ref.current || !chart.current || !data.columns) return;

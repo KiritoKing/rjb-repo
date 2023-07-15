@@ -12,6 +12,7 @@ const Layout = () => {
     <Sheet
       sx={{
         width: "60%",
+        minWidth: "300px",
         mx: "auto",
         my: 5,
         display: "flex",

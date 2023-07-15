@@ -46,7 +46,8 @@ const LoginModal: React.FC<IProps> = ({ open, onLogin }) => {
         <Sheet
           component="form"
           sx={{
-            minWidth: 400,
+            minWidth: 200,
+            width: "20vw",
             mx: 5,
             my: 4, // margin top & bottom
             display: "flex",

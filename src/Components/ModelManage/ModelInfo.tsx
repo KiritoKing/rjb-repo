@@ -1,9 +1,8 @@
 import { Sheet } from "@mui/joy";
-import ModelParams from "./ModelParams";
 import FormInput from "@/Components/General/FormInput";
 import { useImmer } from "use-immer";
 import { FC, useMemo, useState } from "react";
-import i18n from "@/Constants/Lang/zh-CN";
+import { zhCN } from "@/Constants/lang";
 
 import { produce } from "immer";
 
@@ -20,7 +19,7 @@ const ModelInfo: FC<{
           <FormInput
             required
             name={label}
-            label={i18n[label] ?? label}
+            label={zhCN[label] ?? label}
             initValue={value}
             disabled={readonly}
             labelWidth={150}

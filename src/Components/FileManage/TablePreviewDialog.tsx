@@ -16,7 +16,12 @@ const TablePreviewDialog: React.FC<IProps> = ({ open, onClose, data }) => {
 
   return (
     <Modal open={open} onClose={onClose}>
-      <ModalDialog sx={{ transition: "opacity 0.3s, visibility 0s 0.3s" }}>
+      <ModalDialog
+        sx={{
+          transition: "opacity 0.3s, visibility 0s 0.3s",
+          overflow: "hidden",
+        }}
+      >
         <ModalClose />
         <Sheet
           component="form"
@@ -28,7 +33,7 @@ const TablePreviewDialog: React.FC<IProps> = ({ open, onClose, data }) => {
             display: "flex",
             flexDirection: "column",
             gap: 2,
-            overflowX: "scroll",
+            overflow: "scroll",
           }}
         >
           <Table stickyHeader size="sm">
