@@ -10,7 +10,7 @@ interface IProps {
   canRun?: boolean;
   mode?: "train" | "apply";
   setId?: string;
-  modelParams?: IModelParam;
+  modelParams?: TrainParams;
   modelId?: string;
 }
 

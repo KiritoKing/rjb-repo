@@ -14,7 +14,7 @@ type TaskParam =
   | {
       task: "train";
       setId: string;
-      modelParams: IModelParam;
+      modelParams: TrainParams;
     };
 
 export default function useSocket() {
@@ -62,8 +62,11 @@ export default function useSocket() {
       "done",
       (data: { type: "train" | "apply"; data: TableRow[] }) => {
         console.log(data);
-        if (data.data) {
+        if (data.type === "apply" && data.data) {
           pushTableData(data.data);
+        } else if (data.type === "train") {
+          // TODO: 训练完成后，更新结果预览曲线
+          toast("训练完成");
         }
         setIsFinished(true);
         setLatestMessage("[WebSocket] Finished!");

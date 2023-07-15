@@ -2,13 +2,18 @@ interface IModelInfo {
   name: string;
   description?: string;
   id: number;
-  params?: IModelParam;
+  params?: ModelParams;
 }
 
-interface IModelParam {
+type ModelParams = {
+  name: string;
+  inWindowSize: number;
+  outWindowSize: number;
+  [key: string]: number | string;
+};
+
+type TrainParams = {
   epoch: number;
   batchSize: number;
   learningRate: number;
-  windowSize: number;
-  [key: string]: number | string;
-}
+} & ModelParams;
