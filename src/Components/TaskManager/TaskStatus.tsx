@@ -28,17 +28,21 @@ const TaskStatus: FC<{
       return (
         <Sheet sx={{ display: "flex", px: 2, gap: 4, widows: "100%" }}>
           <Typography>{progress}%</Typography>
-          <LinearProgress
-            sx={{
-              flex: 1,
-              bgcolor: "transparent",
-              ":before": {
-                transition: "all 0.1s ease-in-out",
-              },
-            }}
-            determinate
-            value={progress}
-          />
+          {progress !== undefined && progress > 0 ? (
+            <LinearProgress
+              sx={{
+                flex: 1,
+                bgcolor: "transparent",
+                ":before": {
+                  transition: "all 0.1s ease-in-out",
+                },
+              }}
+              determinate
+              value={progress}
+            />
+          ) : (
+            <LinearProgress sx={{ bgcolor: "transparent", flex: 1 }} />
+          )}
         </Sheet>
       );
     } else if (status === "finished") {
