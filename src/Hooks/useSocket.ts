@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Socket, io } from "socket.io-client";
 import dayjs from "dayjs";
+import { toast } from "sonner";
 
 export default function useSocket() {
   const socket = useRef<Socket | null>(null);
@@ -22,12 +23,13 @@ export default function useSocket() {
     if (!socket.current) return;
     socket.current.on("connect", () => {
       setIsConnected(true);
+      toast("WebSocket已连接");
       setLatestMessage("[WebSocket] Connected!");
       socket.current?.emit("run");
     });
     socket.current.on("disconnect", () => {
       setIsConnected(false);
-      alert("Disconnected!");
+      toast("WebSocket断开连接");
     });
     socket.current.on("message", (data) => {
       setLatestMessage(`[${dayjs().valueOf()}] ${data as string}`);

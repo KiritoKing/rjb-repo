@@ -5,6 +5,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 import ModelInfo from "@/Components/ModelManage/ModelInfo";
 import FileManager from "@/Components/FileManage";
+import TaskManager from "@/Components/TaskManager";
 
 const Train = () => {
   const nav = useNavigate();
@@ -30,6 +31,7 @@ const Train = () => {
       </Sheet>
       <ModelInfo />
       <FileManager />
+      <TaskManager />
     </SectionCard>
   );
 };
