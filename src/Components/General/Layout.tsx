@@ -11,8 +11,7 @@ const Layout = () => {
   return (
     <Sheet
       sx={{
-        width: "60%",
-        minWidth: "300px",
+        width: "var(--card-width)",
         mx: "auto",
         my: 5,
         display: "flex",

@@ -23,7 +23,6 @@ const ModelInfo: FC<{
             initValue={value}
             disabled={readonly}
             labelWidth={150}
-            inputWidth={400}
             onChange={(e) => {
               const newState = produce(data, (draft) => {
                 draft[label] = e;

@@ -1,4 +1,4 @@
-import { Sheet, Typography } from "@mui/joy";
+import { Sheet, Stack, Typography } from "@mui/joy";
 import React from "react";
 
 interface IProps {
@@ -8,7 +8,11 @@ interface IProps {
 
 const SectionTitle: React.FC<IProps> = ({ title, subTitle }) => {
   return (
-    <Sheet sx={{ display: "flex", alignItems: "baseline", gap: 1 }}>
+    <Stack
+      direction={{ sx: "column", sm: "row" }}
+      spacing={1}
+      sx={{ alignItems: "baseline" }}
+    >
       <Typography level="h4" component="span">
         {title}
       </Typography>
@@ -17,7 +21,7 @@ const SectionTitle: React.FC<IProps> = ({ title, subTitle }) => {
           {subTitle}
         </Typography>
       )}
-    </Sheet>
+    </Stack>
   );
 };
 

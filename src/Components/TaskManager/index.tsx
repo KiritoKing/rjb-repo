@@ -60,10 +60,10 @@ const TaskManager: FC<IProps> = ({
     }
   };
   return (
-    <Sheet sx={{ px: 4 }}>
+    <Sheet sx={{ px: 2 }}>
       <Sheet
         sx={{
-          mt: 4,
+          mt: 1,
           display: "flex",
           flexDirection: "row",
           justifyContent: "flex-end",

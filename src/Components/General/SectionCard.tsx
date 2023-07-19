@@ -7,9 +7,7 @@ const SectionCard: React.FC<PropsWithChildren> = ({ children }) => {
       variant="outlined"
       sx={{
         width: "100%",
-        p: 5,
-        // backdropFilter: "blur(10px)",
-        // backgroundColor: "rgba(255, 255, 255, 0.5)",
+        p: "var(--card-padding)",
       }}
     >
       <Stack spacing={2} sx={{ width: "100%" }}>

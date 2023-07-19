@@ -29,7 +29,7 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <CssVarsProvider>
+    <CssVarsProvider defaultMode="system">
       <Toaster duration={1500} closeButton richColors position="top-left" />
       <RouterProvider router={router} />
     </CssVarsProvider>

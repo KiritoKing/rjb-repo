@@ -1,4 +1,4 @@
-import { Sheet, Typography } from "@mui/joy";
+import { Sheet, Stack, Typography } from "@mui/joy";
 import UploadButton from "./UploadButton";
 import { FC, useCallback, useEffect, useState } from "react";
 import FileList from "./FileList";
@@ -114,22 +114,25 @@ const FileManager: FC<{
   };
 
   return (
-    <Sheet sx={{ mt: 2 }}>
+    <Sheet sx={{ mt: 2, px: 2 }}>
       <Sheet
         sx={{
-          mx: 2,
-          px: 4,
+          px: 2,
           py: 2,
           border: "1px dashed gray",
           borderRadius: "10px",
         }}
       >
-        <Sheet sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={1}
+          sx={{ mb: 2 }}
+        >
           <Typography sx={{ flex: 1 }} level="h5" component="span">
             选择要上传的文件
           </Typography>
           <UploadButton onUpload={handleUpload} />
-        </Sheet>
+        </Stack>
         <FileList files={csvFiles} onDeleteItem={handleDelete} />
       </Sheet>
     </Sheet>

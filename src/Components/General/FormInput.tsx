@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, Input, Typography } from "@mui/joy";
+import { FormControl, FormLabel, Input, Stack, Typography } from "@mui/joy";
 import { FC, HTMLInputTypeAttribute } from "react";
 
 interface IProps {
@@ -29,10 +29,9 @@ const FormInput: FC<IProps> = ({
   return (
     <FormControl
       required={required}
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-      }}
+      component={Stack}
+      direction={{ xs: "column", sm: "row" }}
+      spacing={{ xs: 1, sm: 2, md: 4 }}
     >
       <Typography
         component={FormLabel}

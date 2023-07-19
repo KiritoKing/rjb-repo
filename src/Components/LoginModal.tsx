@@ -6,6 +6,7 @@ import { Button, FormControl, FormLabel, Input, Typography } from "@mui/joy";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import useAxios from "@/Hooks/useAxios";
 import useGlobalState from "@/Hooks/useGlobalState";
+import FormInput from "./General/FormInput";
 
 interface IProps {
   open: boolean;
@@ -47,7 +48,7 @@ const LoginModal: React.FC<IProps> = ({ open, onLogin }) => {
           component="form"
           sx={{
             minWidth: 200,
-            width: "20vw",
+            width: "fit-content",
             mx: 5,
             my: 4, // margin top & bottom
             display: "flex",
@@ -61,38 +62,20 @@ const LoginModal: React.FC<IProps> = ({ open, onLogin }) => {
             </Typography>
             <Typography level="body2">您需要登录才能继续操作</Typography>
           </Sheet>
-          <FormControl>
-            <FormLabel>用户名</FormLabel>
-            <Input
-              onChange={(e) => {
-                setUsername(e.target.value);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleLogin();
-                }
-              }}
-              name="username"
-              type="text"
-              placeholder="请输入用户名"
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>密码</FormLabel>
-            <Input
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleLogin();
-                }
-              }}
-              name="password"
-              type="password"
-              placeholder="请输入密码"
-            />
-          </FormControl>
+          <FormInput
+            name="username"
+            label="用户名"
+            type="text"
+            onChange={(e) => setUsername(e.toString())}
+            onReturn={handleLogin}
+          />
+          <FormInput
+            name="password"
+            label="密码"
+            type="password"
+            onChange={(e) => setPassword(e.toString())}
+            onReturn={handleLogin}
+          />
           {error && (
             <Typography
               color="danger"
