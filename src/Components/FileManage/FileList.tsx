@@ -55,8 +55,6 @@ const FileItem: FC<IItemProps> = ({ file, onDelete, onPreview }) => {
       variant="outlined"
       sx={{
         display: "flex",
-        mx: 2,
-        mb: 1,
         flexDirection: "row",
         alignItems: "center",
         border: "2px solid",
@@ -73,13 +71,14 @@ const FileItem: FC<IItemProps> = ({ file, onDelete, onPreview }) => {
           height: "100%",
           display: "flex",
           alignItems: "center",
-          px: 1,
           flex: 1,
           cursor: "pointer",
           color: textColor,
+          whiteSpace: "nowrap",
+          overflow: "hidden",
         }}
       >
-        <FilePresentIcon sx={{ mr: 1 }} />
+        <FilePresentIcon sx={{ mr: 1, display: "var(--file-icon-display)" }} />
         {file.title}
       </Typography>
       <IconButton
@@ -129,7 +128,7 @@ const FileList: FC<IListProps> = ({ files, onDeleteItem }) => {
     );
   }
   return (
-    <Stack>
+    <Stack spacing={1} sx={{ px: "var(--file-list-padding)" }}>
       {files.map((file, index) => {
         return (
           <React.Fragment key={index}>

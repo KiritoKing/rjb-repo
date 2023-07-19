@@ -11,7 +11,6 @@ const ModelList: React.FC<IProps> = ({ options, onChange }) => {
     <RadioGroup name="models" onChange={(e) => onChange?.(e.target.value)}>
       <List
         sx={{
-          minWidth: 240,
           "--List-gap": "0.5rem",
           "--ListItem-paddingY": "1rem",
           "--ListItem-radius": "8px",

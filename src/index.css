@@ -12,8 +12,16 @@
   font-size: 14px;
   --card-padding: 2rem;
   --card-width: 653px;
+  --file-icon-display: block;
+  --file-list-padding: 1rem;
 }
 
+@media (max-width: 320px) {
+  :root {
+    --file-icon-display: none;
+    --file-list-padding: 0;
+  }
+}
 @media (max-width: 768px) {
   :root {
     font-size: 12px;
