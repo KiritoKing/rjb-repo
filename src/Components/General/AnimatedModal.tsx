@@ -16,10 +16,10 @@ const AnimatedModal: FC<
     <Transition nodeRef={contentRef} in={open} timeout={duration}>
       {(state) => (
         <Modal
-          keepMounted
           ref={contentRef}
           open={!["exited", "exiting"].includes(state)}
           onClose={onClose}
+          keepMounted={state !== "exited"}
           slotProps={{
             backdrop: {
               sx: {
