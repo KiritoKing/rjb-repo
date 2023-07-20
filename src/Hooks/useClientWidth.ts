@@ -11,7 +11,7 @@ function useClientWidth(breakPoint = XS_BREAKPOINT) {
 
   useEffect(() => {
     const fn = _.debounce((width: number) => {
-      console.log(width);
+      // console.log(width);
       setClientWidth(width);
     }, 100);
     window.addEventListener("resize", () => fn(window.innerWidth));

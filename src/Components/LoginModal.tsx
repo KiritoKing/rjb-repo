@@ -7,6 +7,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import useAxios from "@/Hooks/useAxios";
 import useGlobalState from "@/Hooks/useGlobalState";
 import FormInput from "./General/FormInput";
+import AnimatedModal from "./General/AnimatedModal";
 
 interface IProps {
   open: boolean;
@@ -42,62 +43,60 @@ const LoginModal: React.FC<IProps> = ({ open, onLogin }) => {
   };
 
   return (
-    <Modal open={open}>
-      <ModalDialog>
-        <Sheet
-          component="form"
-          sx={{
-            width: "fit-content",
-            mx: 5,
-            my: 4, // margin top & bottom
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-          }}
-        >
-          <Sheet sx={{ mb: 2 }}>
-            <Typography level="h4" component="h1">
-              欢迎来到模型可视化平台
-            </Typography>
-            <Typography level="body2">您需要登录才能继续操作</Typography>
-          </Sheet>
-          <FormInput
-            name="username"
-            label="用户名"
-            type="text"
-            onChange={(e) => setUsername(e.toString())}
-            onReturn={handleLogin}
-            labelWidth="3rem"
-          />
-          <FormInput
-            name="password"
-            label="密码"
-            type="password"
-            onChange={(e) => setPassword(e.toString())}
-            onReturn={handleLogin}
-            labelWidth="3rem"
-          />
-          {error && (
-            <Typography
-              color="danger"
-              level="body2"
-              sx={{ display: "flex", alignItems: "center" }}
-            >
-              <ErrorOutlineIcon sx={{ mr: 1 }} />
-              {error}
-            </Typography>
-          )}
-          <Sheet
-            sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 2 }}
-          >
-            <Button disabled={loading} onClick={handleLogin}>
-              登录
-            </Button>
-            <Button>注册</Button>
-          </Sheet>
+    <AnimatedModal open={open}>
+      <Sheet
+        component="form"
+        sx={{
+          width: "fit-content",
+          mx: 5,
+          my: 4, // margin top & bottom
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+        }}
+      >
+        <Sheet sx={{ mb: 2 }}>
+          <Typography level="h4" component="h1">
+            欢迎来到模型可视化平台
+          </Typography>
+          <Typography level="body2">您需要登录才能继续操作</Typography>
         </Sheet>
-      </ModalDialog>
-    </Modal>
+        <FormInput
+          name="username"
+          label="用户名"
+          type="text"
+          onChange={(e) => setUsername(e.toString())}
+          onReturn={handleLogin}
+          labelWidth="3rem"
+        />
+        <FormInput
+          name="password"
+          label="密码"
+          type="password"
+          onChange={(e) => setPassword(e.toString())}
+          onReturn={handleLogin}
+          labelWidth="3rem"
+        />
+        {error && (
+          <Typography
+            color="danger"
+            level="body2"
+            sx={{ display: "flex", alignItems: "center" }}
+          >
+            <ErrorOutlineIcon sx={{ mr: 1 }} />
+            {error}
+          </Typography>
+        )}
+        <Sheet
+          sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 2 }}
+        >
+          <Button disabled={loading} onClick={handleLogin}>
+            登录
+          </Button>
+          <Button>注册</Button>
+        </Sheet>
+      </Sheet>
+    </AnimatedModal>
   );
 };
 

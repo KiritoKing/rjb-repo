@@ -78,7 +78,10 @@ const LogBox: FC<{
             ref={logContainerRef}
           >
             {messages?.map((msg, index) => (
-              <Sheet key={index} sx={{ bgcolor: "transparent" }}>
+              <Sheet
+                key={index}
+                sx={{ bgcolor: "transparent", transition: "all 0.2s ease" }}
+              >
                 <Typography fontSize="12px">{msg}</Typography>
               </Sheet>
             ))}
