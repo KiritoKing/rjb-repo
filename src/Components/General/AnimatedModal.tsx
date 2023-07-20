@@ -43,11 +43,11 @@ const AnimatedModal: FC<
             sx={{
               transition: `all ${duration}ms ease-in-out`,
               ...{
-                entering: { opacity: 1 },
+                entering: { opacity: 1, transform: "translate(-50%, 100vh)" },
                 entered: { opacity: 1 },
                 exiting: { opacity: 0, transform: "translate(-50%, 100vh)" },
                 exited: { opacity: 0 },
-                unmounted: { opacity: 0 },
+                unmounted: { opacity: 0, transform: "translate(-50%, 100vh)" },
               }[state],
             }}
           >
