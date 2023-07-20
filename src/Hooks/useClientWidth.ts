@@ -1,8 +1,13 @@
+import { XS_BREAKPOINT } from "@/Constants/responsive";
 import _ from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-function useClientWidth() {
+function useClientWidth(breakPoint = XS_BREAKPOINT) {
   const [clientWidth, setClientWidth] = useState(window.innerWidth);
+  const isCollapsed = useMemo(
+    () => clientWidth < breakPoint,
+    [breakPoint, clientWidth]
+  );
 
   useEffect(() => {
     const fn = _.debounce((width: number) => {
@@ -12,7 +17,7 @@ function useClientWidth() {
     window.addEventListener("resize", () => fn(window.innerWidth));
   }, []);
 
-  return clientWidth;
+  return [clientWidth, isCollapsed] as const;
 }
 
 export default useClientWidth;

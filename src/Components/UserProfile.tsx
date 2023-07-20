@@ -13,11 +13,12 @@ import useAxios from "@/Hooks/useAxios";
 import { toast } from "sonner";
 import _ from "lodash";
 import useClientWidth from "@/Hooks/useClientWidth";
+import { XL_BREAKPOINT } from "@/Constants/responsive";
 
 const UserProfile = () => {
   const username = useGlobalState((s) => s.username);
   const setUsername = useGlobalState((s) => s.setUsername);
-  const clientWidth = useClientWidth();
+  const [clientWidth, collapsed] = useClientWidth(XL_BREAKPOINT);
   const ref = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [, error, , fetchLogout] = useAxios<null>(
@@ -52,8 +53,8 @@ const UserProfile = () => {
         sx={{
           color: "#99999",
           borderRadius: "50px",
-          px: clientWidth >= 700 ? 3 : 0,
-          py: clientWidth >= 700 ? 1 : 0,
+          px: !collapsed ? 3 : 0,
+          py: !collapsed ? 1 : 0,
           width: "fit-content",
           height: "fit-content",
           position: "fixed",
@@ -69,9 +70,7 @@ const UserProfile = () => {
         }}
       >
         <Avatar size="sm" />
-        {clientWidth >= 1400 && (
-          <Typography component="span">{username}</Typography>
-        )}
+        {!collapsed && <Typography component="span">{username}</Typography>}
       </Card>
       <Menu open={menuOpen} onClose={handleClose} anchorEl={ref.current}>
         <MenuItem onClick={() => fetchLogout()}>

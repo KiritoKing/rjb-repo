@@ -31,6 +31,7 @@ const ExpandButton = styled("span")`
 
 const Content = styled("div")`
   width: 100%;
+  font-size: 12px;
   overflow-y: scroll;
   margin: 0;
   padding: 10px;
@@ -44,12 +45,6 @@ const LogBox: FC<{
 }> = ({ messages }) => {
   const [showDetail, setShowDetail] = React.useState(false);
   const logContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (logContainerRef.current) {
-      logContainerRef.current.scrollTop = logContainerRef.current.scrollHeight;
-    }
-  }, [messages]);
 
   return (
     <Sheet sx={{ px: "var(--log-box-padding)", mt: 2, pt: 1 }}>
@@ -74,13 +69,20 @@ const LogBox: FC<{
       </Header>
       <Content>
         <Collapse open={showDetail}>
-          <div ref={logContainerRef}>
+          <Sheet
+            sx={{
+              bgcolor: "transparent",
+              display: "flex",
+              flexDirection: "column-reverse",
+            }}
+            ref={logContainerRef}
+          >
             {messages?.map((msg, index) => (
-              <Sheet key={index} sx={{ bgcolor: "transparent" }}>
+              <Sheet key={index} sx={{ bgcolor: "transparent", mx: 0.5 }}>
                 <Typography>{msg}</Typography>
               </Sheet>
             ))}
-          </div>
+          </Sheet>
         </Collapse>
       </Content>
     </Sheet>
