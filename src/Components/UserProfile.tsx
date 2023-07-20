@@ -7,7 +7,7 @@ import {
   MenuItem,
   Typography,
 } from "@mui/joy";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import useAxios from "@/Hooks/useAxios";
 import { toast } from "sonner";
@@ -18,7 +18,7 @@ import { XL_BREAKPOINT } from "@/Constants/responsive";
 const UserProfile = () => {
   const username = useGlobalState((s) => s.username);
   const setUsername = useGlobalState((s) => s.setUsername);
-  const [clientWidth, collapsed] = useClientWidth(XL_BREAKPOINT);
+  const [, collapsed] = useClientWidth(XL_BREAKPOINT);
   const ref = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [, error, , fetchLogout] = useAxios<null>(
@@ -53,8 +53,8 @@ const UserProfile = () => {
         sx={{
           color: "#99999",
           borderRadius: "50px",
-          px: !collapsed ? 3 : 0,
-          py: !collapsed ? 1 : 0,
+          px: !collapsed ? 3 : 0.5,
+          py: !collapsed ? 1 : 0.5,
           width: "fit-content",
           height: "fit-content",
           position: "fixed",
