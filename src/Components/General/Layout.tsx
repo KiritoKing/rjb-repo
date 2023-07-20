@@ -13,7 +13,7 @@ const Layout = () => {
       sx={{
         width: "var(--card-width)",
         mx: "auto",
-        my: 5,
+        py: 5,
         display: "flex",
         flexDirection: "column",
         gap: 5,
