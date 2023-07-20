@@ -69,7 +69,7 @@ const UserProfile = () => {
         }}
       >
         <Avatar size="sm" />
-        {clientWidth >= 700 && (
+        {clientWidth >= 1400 && (
           <Typography component="span">{username}</Typography>
         )}
       </Card>
