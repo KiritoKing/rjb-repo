@@ -47,7 +47,6 @@ const LoginModal: React.FC<IProps> = ({ open, onLogin }) => {
         <Sheet
           component="form"
           sx={{
-            minWidth: 200,
             width: "fit-content",
             mx: 5,
             my: 4, // margin top & bottom
@@ -68,6 +67,7 @@ const LoginModal: React.FC<IProps> = ({ open, onLogin }) => {
             type="text"
             onChange={(e) => setUsername(e.toString())}
             onReturn={handleLogin}
+            labelWidth="3rem"
           />
           <FormInput
             name="password"
@@ -75,6 +75,7 @@ const LoginModal: React.FC<IProps> = ({ open, onLogin }) => {
             type="password"
             onChange={(e) => setPassword(e.toString())}
             onReturn={handleLogin}
+            labelWidth="3rem"
           />
           {error && (
             <Typography

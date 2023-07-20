@@ -10,8 +10,8 @@ interface IProps {
   disabled?: boolean;
   onChange?: (value: string | number) => void;
   onReturn?: () => void;
-  labelWidth?: number;
-  inputWidth?: number;
+  labelWidth?: number | string;
+  inputWidth?: number | string;
 }
 
 const FormInput: FC<IProps> = ({
@@ -32,10 +32,18 @@ const FormInput: FC<IProps> = ({
       component={Stack}
       direction={{ xs: "column", sm: "row" }}
       spacing={{ xs: 1, sm: 2, md: 4 }}
+      sx={{ width: "100%" }}
     >
       <Typography
         component={FormLabel}
-        sx={{ mr: 2, pt: 1.2, width: labelWidth && `${labelWidth}px` }}
+        sx={{
+          mr: 2,
+          pt: 1.2,
+          width:
+            typeof labelWidth === "number"
+              ? `${labelWidth}px`
+              : labelWidth ?? "fit-content",
+        }}
       >
         {label ?? name}
       </Typography>
@@ -52,7 +60,12 @@ const FormInput: FC<IProps> = ({
             onReturn?.();
           }
         }}
-        sx={{ width: inputWidth && `${inputWidth}px` }}
+        sx={{
+          width:
+            typeof inputWidth === "number"
+              ? `${inputWidth}px`
+              : inputWidth ?? "fit-content",
+        }}
       />
     </FormControl>
   );
