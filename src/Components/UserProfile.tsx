@@ -33,6 +33,9 @@ const UserProfile = () => {
       } else {
         toast.error("登出失败: " + error);
       }
+    },
+    (err) => {
+      toast.error("登出失败: " + err.message);
     }
   );
 
