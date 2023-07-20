@@ -11,7 +11,7 @@
 
 ### 项目改进
 
-- [ ] 添加 commit-lint 以自动控制版本、发布 CHANGELOG
+- [x] 添加 commit-lint 以自动控制版本、发布 CHANGELOG
 - [x] 使用全局状态管理方案
 - [x] 改进全局状态流
   - Files 不全局存储，采用状态提升
