@@ -1,7 +1,7 @@
 import { IconButton, Sheet, Typography, styled } from "@mui/joy";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import React, { FC } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import Collapse from "../General/Collapse";
 
 const Header = styled("div")`
@@ -43,16 +43,22 @@ const LogBox: FC<{
   messages?: string[];
 }> = ({ messages }) => {
   const [showDetail, setShowDetail] = React.useState(false);
+  const logContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (logContainerRef.current) {
+      logContainerRef.current.scrollTop = logContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   return (
-    <Sheet sx={{ px: 2, mt: 2, pt: 1 }}>
+    <Sheet sx={{ px: "var(--log-box-padding)", mt: 2, pt: 1 }}>
       <Header>
         <Sheet
           sx={{
             ml: "55px",
             bgcolor: "transparent",
             display: "inline",
-            fontSize: "14px",
             verticalAlign: "center",
           }}
         >
@@ -68,11 +74,13 @@ const LogBox: FC<{
       </Header>
       <Content>
         <Collapse open={showDetail}>
-          {messages?.map((msg, index) => (
-            <Sheet key={index} sx={{ bgcolor: "transparent" }}>
-              <Typography>{msg}</Typography>
-            </Sheet>
-          ))}
+          <div ref={logContainerRef}>
+            {messages?.map((msg, index) => (
+              <Sheet key={index} sx={{ bgcolor: "transparent" }}>
+                <Typography>{msg}</Typography>
+              </Sheet>
+            ))}
+          </div>
         </Collapse>
       </Content>
     </Sheet>
