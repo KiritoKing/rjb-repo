@@ -6,6 +6,8 @@ import React, { FC, useMemo, useState } from "react";
 import { keyframes } from "@emotion/react";
 import TablePreviewDialog from "./TablePreviewDialog";
 import { toast } from "sonner";
+import useClientWidth from "@/Hooks/useClientWidth";
+import { SM_BREAKPOINT } from "@/Constants/responsive";
 
 interface IItemProps {
   file: CsvFileItem;
@@ -101,13 +103,15 @@ const FileItem: FC<IItemProps> = ({ file, onDelete, onPreview }) => {
 const FileList: FC<IListProps> = ({ files, onDeleteItem }) => {
   const [previewDialogOpen, setPreviewDialogOpen] = useState(false);
   const [currentFile, setCurrentFile] = useState<CsvFileItem>();
+  const [, collapsed] = useClientWidth(SM_BREAKPOINT);
 
-  const handlePreivew = (index: number) => {
+  const handlePreview = (index: number) => {
+    if (collapsed) return;
     setCurrentFile(files[index]);
     if (files[index].previewData) {
       setPreviewDialogOpen(true);
     } else {
-      toast.error("预览打开失败：无数据回传");
+      toast("无法预览无数据的文件");
     }
   };
 
@@ -135,7 +139,7 @@ const FileList: FC<IListProps> = ({ files, onDeleteItem }) => {
             <FileItem
               file={file}
               onDelete={() => onDeleteItem?.(index)}
-              onPreview={() => handlePreivew(index)}
+              onPreview={() => handlePreview(index)}
             />
             <TablePreviewDialog
               open={previewDialogOpen}
