@@ -6,13 +6,14 @@ const AnimatedModal: FC<
   PropsWithChildren<{
     open: boolean;
     layout?: "center" | "fullscreen";
+    duration?: number;
     onClose?: () => void;
   }>
-> = ({ open, layout, onClose, children = null }) => {
+> = ({ open, layout, duration = 400, onClose, children }) => {
   const contentRef = useRef<HTMLDivElement>(null);
 
   return (
-    <Transition nodeRef={contentRef} in={open} timeout={600}>
+    <Transition nodeRef={contentRef} in={open} timeout={duration}>
       {(state) => (
         <Modal
           keepMounted
@@ -22,7 +23,7 @@ const AnimatedModal: FC<
           slotProps={{
             backdrop: {
               sx: {
-                transition: `opacity 400ms, backdrop-filter 400ms`,
+                transition: `opacity ${duration}ms, backdrop-filter ${duration}ms`,
                 ...{
                   entering: { opacity: 1, backdropFilter: "blur(8px)" },
                   entered: { opacity: 1, backdropFilter: "blur(8px)" },
@@ -40,11 +41,11 @@ const AnimatedModal: FC<
           <ModalDialog
             layout={layout}
             sx={{
-              transition: `opacity 300ms`,
+              transition: `all ${duration}ms ease-in-out`,
               ...{
                 entering: { opacity: 1 },
                 entered: { opacity: 1 },
-                exiting: { opacity: 0 },
+                exiting: { opacity: 0, transform: "translate(-50%, 100vh)" },
                 exited: { opacity: 0 },
                 unmounted: { opacity: 0 },
               }[state],
