@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import _ from "lodash";
 
 interface IOption {
-  dillema?: string; // 分隔符
+  dilemma?: string; // 分隔符
   withColumn?: boolean; // 第一行默认为列名
 }
 
-function extractColumns(line: string, dillema: string): string[] {
+function extractColumns(line: string): string[] {
   const columnNames = [];
   let columnName = "";
   let insideQuotes = false;
@@ -33,7 +33,7 @@ function extractColumns(line: string, dillema: string): string[] {
   return columnNames;
 }
 
-async function readCsv(file: Blob, dillema = ","): Promise<ITableData | null> {
+async function readCsv(file: Blob, dilemma = ","): Promise<ITableData | null> {
   const reader = new FileReader();
   reader.readAsText(file);
   return new Promise((resolve, reject) => {
@@ -43,12 +43,10 @@ async function readCsv(file: Blob, dillema = ","): Promise<ITableData | null> {
       const lines = text
         .split("\n")
         .map((line) => line.trim().replace(/"/g, "")); // 去除CRLF行尾
-      // 匹配CSV表头
-      console.log(lines[0]);
-      const columns = extractColumns(lines[0], dillema);
+      const columns = extractColumns(lines[0]);
       const data = lines
         .slice(1)
-        .map((line) => line.split(dillema))
+        .map((line) => line.split(dilemma))
         .filter((line) => line.length === columns.length); // 过滤不合格数据
       resolve({ columns, data });
     };
@@ -65,11 +63,11 @@ async function readCsv(file: Blob, dillema = ","): Promise<ITableData | null> {
 export default function useCsv(
   files: CsvFileItem[],
   options: IOption = {
-    dillema: ",",
+    dilemma: ",",
     withColumn: true,
   }
 ) {
-  const { withColumn, dillema } = options;
+  const { withColumn, dilemma: dillema } = options;
   const [data, setData] = useState<ITableData>({
     columns: withColumn ? [] : undefined,
     data: [],
@@ -107,6 +105,7 @@ export default function useCsv(
           }
         })
         .catch((err) => {
+          // eslint-disable-next-line no-console
           console.warn(`[useCsv] Read csv error: ${err}`);
         });
     });

@@ -5,7 +5,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 import FileManager from "@/Components/FileManage";
 import TaskManager from "@/Components/TaskManager";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import LineChart from "@/Components/LineChart";
 import useGlobalState from "@/Hooks/useGlobalState";
 import { useImmer } from "use-immer";
@@ -36,7 +36,6 @@ const Train = () => {
   };
 
   const handleInfoChange = (value: TrainParams) => {
-    console.log(value);
     setParams(value);
   };
 

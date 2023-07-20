@@ -11,7 +11,6 @@ const LineChart: FC<IProps> = ({ data }) => {
   const [chartRef, setData] = useChart(4);
 
   useEffect(() => {
-    console.log(data);
     setData(data);
   }, [data, setData]);
 

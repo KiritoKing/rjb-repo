@@ -11,7 +11,6 @@ import { useRef, useState } from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import useAxios from "@/Hooks/useAxios";
 import { toast } from "sonner";
-import _ from "lodash";
 import useClientWidth from "@/Hooks/useClientWidth";
 import { XL_BREAKPOINT } from "@/Constants/responsive";
 

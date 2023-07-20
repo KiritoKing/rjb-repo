@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from "react";
 import { Socket, io } from "socket.io-client";
 import dayjs from "dayjs";
@@ -30,7 +29,6 @@ export default function useSocket() {
   const taskParams = useRef<TaskParam | null>();
 
   const connect = (url: string, params: TaskParam) => {
-    console.log(params);
     taskParams.current = params;
     socket.current = io(url, { autoConnect: false, reconnection: false });
     socket.current.connect();
@@ -61,7 +59,6 @@ export default function useSocket() {
     socket.current.on(
       "done",
       (data: { type: "train" | "apply"; data: TableRow[] }) => {
-        console.log(data);
         if (data.type === "apply" && data.data) {
           pushTableData(data.data);
         } else if (data.type === "train") {

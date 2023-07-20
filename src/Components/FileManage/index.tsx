@@ -1,6 +1,6 @@
 import { Sheet, Stack, Typography } from "@mui/joy";
 import UploadButton from "./UploadButton";
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback } from "react";
 import FileList from "./FileList";
 import useGlobalState from "@/Hooks/useGlobalState";
 import useApi from "@/Hooks/useApi";
@@ -44,7 +44,6 @@ const FileManager: FC<{
         if (code !== 0 || !data) {
           throw new Error(msg);
         } else {
-          console.log(data.merged);
           setCsvFiles((draft) => {
             draft.forEach((item) => {
               if (item.blob === file) {
@@ -70,7 +69,6 @@ const FileManager: FC<{
           }
         });
       });
-      console.log(e);
       if (e instanceof Error) {
         toast.error(`上传失败：${e.message}`);
       }
@@ -104,13 +102,11 @@ const FileManager: FC<{
           }
         }
       } catch (e) {
-        console.log(e);
         if (e instanceof Error) {
           toast.error(`删除失败：${e.message}`);
         }
       }
     }
-    console.log(id);
   };
 
   return (

@@ -1,4 +1,4 @@
-import { Sheet, Stack, Typography } from "@mui/joy";
+import { Stack, Typography } from "@mui/joy";
 import React from "react";
 
 interface IProps {

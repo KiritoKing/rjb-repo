@@ -1,7 +1,7 @@
-import { IconButton, Sheet, Stack, Typography, styled } from "@mui/joy";
+import { Sheet, Stack, Typography, styled } from "@mui/joy";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import React, { FC, useEffect, useRef } from "react";
+import React, { FC, useRef } from "react";
 import Collapse from "../General/Collapse";
 
 const Header = styled("div")`

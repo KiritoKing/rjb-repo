@@ -38,37 +38,42 @@ export default function useChart(density: number = DATA_DENSITY) {
     chart.current.resize();
   }, [ref.current?.clientWidth, ref.current?.clientHeight]);
 
-  const setData = useCallback((data: ITableData) => {
-    if (!ref.current || !chart.current || !data.columns) return;
-    // const sampleNum = Number(
-    //   (ref.current.clientWidth / DATA_DENSITY).toFixed()
-    // ); // 代表需要多少个数据点
-    // console.log(
-    //   `PointNum=${ref.current.clientWidth}/${DATA_DENSITY}=${sampleNum}`
-    // );
-    const sampledData = [
-      data.columns,
-      ...data.data
-        .filter((_, i) => i % density === 0)
-        .map((row) => {
-          return row.map((cell, index) => (index === 0 ? cell : Number(cell)));
-        }),
-    ];
-    const seriesType: echarts.SeriesOption[] = data.columns.map(() => ({
-      type: "line",
-    }));
-    const option: echarts.EChartsOption = {
-      ...basicOption,
-      legend: {},
-      dataset: {
-        source: sampledData,
-      },
-      xAxis: { type: "category" }, // 第一列为横坐标
-      yAxis: {},
-      series: seriesType,
-    };
-    chart.current.setOption(option);
-  }, []);
+  const setData = useCallback(
+    (data: ITableData) => {
+      if (!ref.current || !chart.current || !data.columns) return;
+      // const sampleNum = Number(
+      //   (ref.current.clientWidth / DATA_DENSITY).toFixed()
+      // ); // 代表需要多少个数据点
+      // console.log(
+      //   `PointNum=${ref.current.clientWidth}/${DATA_DENSITY}=${sampleNum}`
+      // );
+      const sampledData = [
+        data.columns,
+        ...data.data
+          .filter((_, i) => i % density === 0)
+          .map((row) => {
+            return row.map((cell, index) =>
+              index === 0 ? cell : Number(cell)
+            );
+          }),
+      ];
+      const seriesType: echarts.SeriesOption[] = data.columns.map(() => ({
+        type: "line",
+      }));
+      const option: echarts.EChartsOption = {
+        ...basicOption,
+        legend: {},
+        dataset: {
+          source: sampledData,
+        },
+        xAxis: { type: "category" }, // 第一列为横坐标
+        yAxis: {},
+        series: seriesType,
+      };
+      chart.current.setOption(option);
+    },
+    [density]
+  );
 
   return [ref, setData] as const;
 }

@@ -24,7 +24,6 @@ export default function useLoadData<T>(
       successText && toast.success(successText);
     },
     () => {
-      console.error("Error:", error);
       errorText && toast.error(`${errorText}： ${error}`);
     }
   );

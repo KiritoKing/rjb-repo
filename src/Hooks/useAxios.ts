@@ -1,7 +1,6 @@
 import { AxiosError, AxiosRequestConfig } from "axios";
 import { useState } from "react";
 import useApi from "./useApi";
-import { toast } from "sonner";
 import useGlobalState from "./useGlobalState";
 
 export default function useAxios<T>(
@@ -48,8 +47,6 @@ export default function useAxios<T>(
           setError(error.message);
         }
         onError?.(error);
-      } else {
-        console.log("useAxios: 发生未知错误");
       }
       setLoading(false);
       return false;

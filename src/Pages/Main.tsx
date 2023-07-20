@@ -26,7 +26,6 @@ const Main = () => {
 
   const handleModelChange = (modelId: string) => {
     setModelId(modelId);
-    console.log(modelId);
   };
 
   return (
