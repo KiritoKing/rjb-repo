@@ -1,4 +1,4 @@
-import { IconButton, Sheet, Typography, styled } from "@mui/joy";
+import { IconButton, Sheet, Stack, Typography, styled } from "@mui/joy";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import React, { FC, useEffect, useRef } from "react";
@@ -69,20 +69,20 @@ const LogBox: FC<{
       </Header>
       <Content>
         <Collapse open={showDetail}>
-          <Sheet
+          <Stack
+            direction="column-reverse"
+            spacing={1}
             sx={{
               bgcolor: "transparent",
-              display: "flex",
-              flexDirection: "column-reverse",
             }}
             ref={logContainerRef}
           >
             {messages?.map((msg, index) => (
-              <Sheet key={index} sx={{ bgcolor: "transparent", mx: 0.5 }}>
-                <Typography>{msg}</Typography>
+              <Sheet key={index} sx={{ bgcolor: "transparent" }}>
+                <Typography fontSize="12px">{msg}</Typography>
               </Sheet>
             ))}
-          </Sheet>
+          </Stack>
         </Collapse>
       </Content>
     </Sheet>
