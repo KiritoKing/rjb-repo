@@ -27,7 +27,6 @@ const TaskManager: FC<IProps> = ({
   const [streaming, setStreaming] = useState(false);
   const [streamingMode, setStreamingMode] = useState<"manual" | "auto">("auto");
   const [messages, setMessages] = useState<string[]>([]);
-  const [sendInterval, setSendInterval] = useState(5000);
   const tableData = useGlobalState((s) => s.tableData);
   const currentRow = useRef<number | null>(0);
 
@@ -164,7 +163,7 @@ const TaskManager: FC<IProps> = ({
           </Button>
         </Stack>
       </Stack>
-      {taskStatus !== "waiting" && (
+      {running && (
         <>
           <TaskStatus status={taskStatus} progress={progress} />
           <LogBox messages={messages} />

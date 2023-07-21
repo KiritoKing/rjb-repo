@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
+import { devtools } from "zustand/middleware";
 
 type State = {
   username?: string;
@@ -14,29 +15,31 @@ type Actions = {
 };
 
 const useGlobalState = create(
-  immer<State & Actions>((set) => {
-    return {
-      tableData: {
-        columns: [],
-        data: [],
-      },
-      setUsername(username) {
-        set(() => ({ username }));
-      },
-      pushTableData: (data) => {
-        set((state) => {
-          state.tableData.data.push(...data); // with immer
-        });
-      },
-      setTableData: (data) => {
-        if (!data) {
-          set(() => ({ tableData: { columns: [], data: [] } }));
-          return;
-        }
-        set(() => ({ tableData: data, rawDataLength: data.data.length }));
-      },
-    };
-  })
+  devtools(
+    immer<State & Actions>((set) => {
+      return {
+        tableData: {
+          columns: [],
+          data: [],
+        },
+        setUsername(username) {
+          set(() => ({ username }));
+        },
+        pushTableData: (data) => {
+          set((state) => {
+            state.tableData.data.push(...data); // with immer
+          });
+        },
+        setTableData: (data) => {
+          if (!data) {
+            set(() => ({ tableData: { columns: [], data: [] } }));
+            return;
+          }
+          set(() => ({ tableData: data, rawDataLength: data.data.length }));
+        },
+      };
+    })
+  )
 );
 
 export default useGlobalState;

@@ -61,7 +61,7 @@ const TaskStatus: FC<{
           <Typography>模型运行完成</Typography>
         </Sheet>
       );
-    } else {
+    } else if (status === "abort" || status === "error") {
       return (
         <Sheet
           sx={{
@@ -75,6 +75,8 @@ const TaskStatus: FC<{
           <Typography>运行任务终止</Typography>
         </Sheet>
       );
+    } else {
+      return <></>;
     }
   }, [status, progress]);
 
