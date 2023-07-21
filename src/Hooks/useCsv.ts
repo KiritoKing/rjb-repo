@@ -67,7 +67,7 @@ export default function useCsv(
     withColumn: true,
   }
 ) {
-  const { withColumn, dilemma: dillema } = options;
+  const { withColumn, dilemma: dilemma } = options;
   const [data, setData] = useState<ITableData>({
     columns: withColumn ? [] : undefined,
     data: [],
@@ -92,7 +92,7 @@ export default function useCsv(
   useEffect(() => {
     clearData();
     files.forEach((file, index) => {
-      readCsv(file.blob, dillema)
+      readCsv(file.blob, dilemma)
         .then((res) => {
           if (res === null) return;
           // 没有列冲突时直接push
@@ -110,7 +110,7 @@ export default function useCsv(
         });
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [files, withColumn, dillema]);
+  }, [files, withColumn, dilemma]);
 
   return [data, error] as [ITableData, number[]];
 }

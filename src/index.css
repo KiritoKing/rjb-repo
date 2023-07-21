@@ -6,6 +6,8 @@
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
+  overflow-x: hidden;
+  white-space: nowrap;
 }
 
 :root {
@@ -13,7 +15,7 @@
   background-color: #f4f4f4; /* 更柔和的灰白色背景 */
   position: relative;
   --card-padding: 2rem;
-  --card-width: 653px;
+  --card-width: 768px;
   --file-icon-display: block;
   --file-list-padding: 1rem;
   --log-box-padding: 1rem;
@@ -36,7 +38,7 @@
   :root {
     font-size: 12px;
     --card-padding: 1.5rem;
-    --card-width: 85vw;
+    --card-width: 90vw;
   }
 }
 
