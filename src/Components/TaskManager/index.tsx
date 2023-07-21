@@ -1,13 +1,5 @@
-import {
-  Button,
-  Input,
-  Option,
-  Select,
-  Sheet,
-  Stack,
-  Typography,
-} from "@mui/joy";
-import { FC, useEffect, useRef, useState } from "react";
+import { Button, Option, Select, Sheet, Stack, Typography } from "@mui/joy";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import TaskStatus from "./TaskStatus";
 import LogBox from "./LogBox";
 import useSocket from "@/Hooks/useSocket";
@@ -15,7 +7,6 @@ import { SOCKET_URL } from "@/Constants/url";
 import { toast } from "sonner";
 import FluentSwitch from "../General/FluentSwitch";
 import useGlobalState from "@/Hooks/useGlobalState";
-import { useLatest } from "@reactuses/core";
 
 interface IProps {
   canRun?: boolean;
@@ -34,18 +25,16 @@ const TaskManager: FC<IProps> = ({
 }) => {
   const [running, setRunning] = useState(false);
   const [streaming, setStreaming] = useState(false);
-  const [streamingMode, setStreamingMode] = useState<"manual" | "auto">(
-    "manual"
-  );
+  const [streamingMode, setStreamingMode] = useState<"manual" | "auto">("auto");
   const [messages, setMessages] = useState<string[]>([]);
   const [sendInterval, setSendInterval] = useState(5000);
-  const timer = useRef<number | null>(null);
   const tableData = useGlobalState((s) => s.tableData);
   const currentRow = useRef<number | null>(0);
 
   const {
     isConnected,
     taskStatus,
+    nextReady,
     connect,
     disconnect,
     progress,
@@ -53,15 +42,13 @@ const TaskManager: FC<IProps> = ({
     sendStreamingItem,
   } = useSocket();
 
-  const latestConnected = useLatest(isConnected);
-
   useEffect(() => {
     if (latestMessage) {
       setMessages((prev) => [...prev, latestMessage as string]);
     }
   }, [latestMessage]);
 
-  const handleRunModel = () => {
+  const handleRunModel = useCallback(() => {
     if (!setId) {
       toast.error("没有选择有效数据集");
       return;
@@ -85,9 +72,9 @@ const TaskManager: FC<IProps> = ({
         currentRow.current = 0;
       }
     }
-  };
+  }, [connect, mode, modelId, modelParams, setId, streaming]);
 
-  const handleSendingStream = () => {
+  const handleSendingStream = useCallback(() => {
     if (!modelId) {
       toast.error("没有选择有效模型");
       return;
@@ -108,22 +95,25 @@ const TaskManager: FC<IProps> = ({
         disconnect();
       }
     }
-  };
+  }, [
+    disconnect,
+    modelId,
+    sendStreamingItem,
+    tableData.columns,
+    tableData.data,
+  ]);
 
-  const handleCreateInterval = () => {
-    handleSendingStream();
-    if (timer.current) {
-      clearInterval(timer.current);
+  // 自动发送新请求
+  useEffect(() => {
+    if (
+      taskStatus === "running" &&
+      streaming &&
+      streamingMode === "auto" &&
+      nextReady
+    ) {
+      handleSendingStream();
     }
-    timer.current = setInterval(() => {
-      if (latestConnected.current) {
-        handleSendingStream();
-        return;
-      } else if (timer.current) {
-        clearInterval(timer.current);
-      }
-    }, sendInterval);
-  };
+  }, [handleSendingStream, nextReady, streaming, streamingMode, taskStatus]);
 
   return (
     <Sheet sx={{ px: 2 }}>
@@ -137,7 +127,7 @@ const TaskManager: FC<IProps> = ({
         }}
       >
         {mode === "apply" && (
-          <Stack spacing={2}>
+          <Stack spacing={2} direction={{ xs: "column", sm: "row" }}>
             <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
               <Typography level="body2">模拟实时输入</Typography>
               <FluentSwitch
@@ -146,7 +136,7 @@ const TaskManager: FC<IProps> = ({
               />
             </Stack>
             {streaming && (
-              <>
+              <Stack direction="row" spacing={2}>
                 <Select
                   sx={{ px: 2 }}
                   value={streamingMode}
@@ -158,41 +148,10 @@ const TaskManager: FC<IProps> = ({
                   <Option value="manual">手动输入</Option>
                   <Option value="auto">自动输入</Option>
                 </Select>
-                <Stack
-                  direction={{ xs: "column", sm: "row" }}
-                  spacing={1}
-                  sx={{ alignItems: "center", transition: "all 0.3s ease" }}
-                >
-                  <Stack direction="row" spacing={1}>
-                    {streamingMode === "manual" ? (
-                      <>
-                        <Button
-                          onClick={handleSendingStream}
-                          disabled={!isConnected}
-                        >
-                          发送数据
-                        </Button>
-                      </>
-                    ) : (
-                      <>
-                        <Input
-                          type="number"
-                          value={sendInterval}
-                          onChange={(e) => setSendInterval(+e.target.value)}
-                          placeholder="自动发送间隔"
-                          endDecorator="ms"
-                        />
-                        <Button
-                          onClick={handleCreateInterval}
-                          disabled={!isConnected}
-                        >
-                          开始任务
-                        </Button>
-                      </>
-                    )}
-                  </Stack>
-                </Stack>
-              </>
+                <Button onClick={handleSendingStream} disabled={!isConnected}>
+                  {streamingMode === "manual" ? "发送" : "开始"}
+                </Button>
+              </Stack>
             )}
           </Stack>
         )}
@@ -205,7 +164,7 @@ const TaskManager: FC<IProps> = ({
           </Button>
         </Stack>
       </Stack>
-      {running && (
+      {taskStatus !== "waiting" && (
         <>
           <TaskStatus status={taskStatus} progress={progress} />
           <LogBox messages={messages} />

@@ -39,6 +39,7 @@ export default function useSocket() {
   const [progress, setProgress] = useState<number>(0);
   const finished = useRef<boolean | null>(false);
   const [taskStatus, setTaskStatus] = useState<TaskStatusType>("waiting");
+  const [nextReady, setNextReady] = useState(false);
   const pushTableData = useGlobalState((s) => s.pushTableData);
 
   const taskParams = useRef<TaskParam | null>();
@@ -93,6 +94,7 @@ export default function useSocket() {
     });
     socket.current.on("data", (payload: AxiosResponse<TableRow>) => {
       const { code, data } = payload;
+      setNextReady(true);
       if (code === 0 && data) {
         pushTableData([data]);
       } else if (code === 2) {
@@ -124,6 +126,7 @@ export default function useSocket() {
       toast.error("WebSocket未连接，不能发送数据");
       return;
     }
+    setNextReady(false);
     setLatestMessage(`Send stream data: ${JSON.stringify(param)}`);
     socket.current?.emit("run", param);
   };
@@ -138,6 +141,7 @@ export default function useSocket() {
     taskStatus,
     latestMessage,
     progress,
+    nextReady,
     connect,
     disconnect,
     sendStreamingItem,
