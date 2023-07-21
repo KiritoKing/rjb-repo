@@ -98,6 +98,10 @@ export default function useSocket() {
   };
 
   const sendStreamingItem = (param: TaskParam) => {
+    if (!socket.current?.connected) {
+      toast.error("WebSocket未连接，不能发送数据");
+      return;
+    }
     setLatestMessage(`Send stream data: ${JSON.stringify(param)}`);
     socket.current?.emit("run", param);
   };
