@@ -117,6 +117,7 @@ const FileManager: FC<{
           py: 2,
           border: "1px dashed gray",
           borderRadius: "10px",
+          overflow: "hidden",
         }}
       >
         <Stack

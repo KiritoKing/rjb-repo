@@ -8,6 +8,8 @@ const SectionCard: React.FC<PropsWithChildren> = ({ children }) => {
       sx={{
         width: "100%",
         p: "var(--card-padding)",
+        overflow: "hidden",
+        whiteSpace: "nowrap",
       }}
     >
       <Stack spacing={2} sx={{ width: "100%" }}>

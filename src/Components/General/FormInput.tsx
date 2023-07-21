@@ -61,7 +61,7 @@ const FormInput: FC<IProps> = ({
           }
         }}
         sx={{
-          overflowY: "hidden",
+          overflow: "hidden",
           width:
             typeof inputWidth === "number"
               ? `${inputWidth}px`
