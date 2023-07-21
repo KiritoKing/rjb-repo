@@ -75,10 +75,20 @@ export default function useSocket() {
       if (Number.isNaN(data)) return;
       const progress = Number(data);
       if (progress <= 1) setProgress(progress * 100);
+      else if (progress >= 100) setProgress(100);
       else setProgress(progress);
     });
-    socket.current.on("data", (data: TableRow[]) => {
-      console.log(data);
+    socket.current.on("data", (payload: AxiosResponse<TableRow>) => {
+      const { code, data } = payload;
+      if (code === 0 && data) {
+        pushTableData([data]);
+      } else if (code === 2) {
+        setLatestMessage(
+          "[WARN] Data is not long enough to feed the window! Please keep sending more data!"
+        );
+      } else {
+        toast.error("数据获取失败");
+      }
     });
     socket.current.on(
       "done",

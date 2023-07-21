@@ -15,6 +15,7 @@ const Main = () => {
   const [modelId, setModelId] = useState<string>();
   const tableData = useGlobalState((state) => state.tableData);
   const setTableData = useGlobalState((state) => state.setTableData);
+  const rawLength = useGlobalState((state) => state.rawDataLength);
 
   useEffect(() => {
     return () => setTableData();
@@ -52,7 +53,7 @@ const Main = () => {
 
       <SectionCard>
         <SectionTitle title="结果预览" subTitle="Result Preview" />
-        <LineChart data={tableData} />
+        <LineChart data={tableData} rawLength={rawLength} />
       </SectionCard>
     </>
   );
