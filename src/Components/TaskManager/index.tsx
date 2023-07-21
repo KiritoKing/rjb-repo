@@ -149,11 +149,18 @@ const TaskManager: FC<IProps> = ({
                   <Option value="auto">自动输入</Option>
                 </Select>
                 {streamingMode === "manual" ? (
-                  <Button onClick={handleSendingStream}>发送数据</Button>
+                  <>
+                    <Button
+                      onClick={handleSendingStream}
+                      disabled={!isConnected}
+                    >
+                      发送数据
+                    </Button>
+                  </>
                 ) : (
                   <>
                     <Input placeholder="自动发送间隔" endDecorator="ms" />
-                    <Button>更新间隔</Button>
+                    <Button disabled={!isConnected}>更新间隔</Button>
                   </>
                 )}
               </Stack>
@@ -161,7 +168,7 @@ const TaskManager: FC<IProps> = ({
           </>
         )}
         <Button onClick={handleRunModel} disabled={running || !canRun}>
-          {mode === "train" ? "训练模型" : "应用模型"}
+          {mode === "train" ? "训练模型" : "启动模型"}
         </Button>
       </Stack>
       {running && (

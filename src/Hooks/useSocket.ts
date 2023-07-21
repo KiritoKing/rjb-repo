@@ -98,6 +98,7 @@ export default function useSocket() {
   };
 
   const sendStreamingItem = (param: TaskParam) => {
+    setLatestMessage(`Send stream data: ${JSON.stringify(param)}`);
     socket.current?.emit("run", param);
   };
 
