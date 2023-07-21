@@ -27,7 +27,9 @@ const TaskStatus: FC<{
     } else if (status === "running") {
       return (
         <Sheet sx={{ display: "flex", px: 2, gap: 4, widows: "100%" }}>
-          <Typography>{progress?.toFixed()}%</Typography>
+          <Typography>
+            {progress && progress > 0 ? `${progress?.toFixed()}%` : "运行中..."}
+          </Typography>
           {progress !== undefined && progress > 0 ? (
             <LinearProgress
               sx={{

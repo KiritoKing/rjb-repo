@@ -14,6 +14,12 @@ type TaskParam =
       task: "train";
       setId: string;
       modelParams: TrainParams;
+    }
+  | {
+      task: "realtime";
+      modelId: string;
+      columns: TableRow;
+      data: TableRow;
     };
 
 export default function useSocket() {
@@ -28,11 +34,23 @@ export default function useSocket() {
 
   const taskParams = useRef<TaskParam | null>();
 
-  const connect = (url: string, params: TaskParam) => {
+  const connect = (url: string, params?: TaskParam) => {
     taskParams.current = params;
     socket.current = io(url, { autoConnect: false, reconnection: false });
     socket.current.connect();
     initSocket();
+  };
+
+  const disconnect = () => {
+    if (socket.current?.connected) {
+      socket.current?.disconnect();
+    }
+    socket.current?.off("connect");
+    socket.current?.off("disconnect");
+    socket.current?.off("message");
+    socket.current?.off("progress");
+    socket.current?.off("done");
+    socket.current = null;
   };
 
   const initSocket = () => {
@@ -41,7 +59,10 @@ export default function useSocket() {
       setIsConnected(true);
       toast("WebSocket已连接");
       setLatestMessage("[WebSocket] Connected!");
-      socket.current?.emit("run", taskParams.current);
+      // taskParams为空时为dry-run，仅连接不`run`
+      if (taskParams.current) {
+        socket.current?.emit("run", taskParams.current);
+      }
     });
     socket.current.on("disconnect", () => {
       setIsConnected(false);
@@ -56,32 +77,33 @@ export default function useSocket() {
       if (progress <= 1) setProgress(progress * 100);
       else setProgress(progress);
     });
+    socket.current.on("data", (data: TableRow[]) => {
+      console.log(data);
+    });
     socket.current.on(
       "done",
       (data: { type: "train" | "apply"; data: TableRow[] }) => {
         if (data.type === "apply" && data.data) {
           pushTableData(data.data);
+          console.log(data.data);
         } else if (data.type === "train") {
           // TODO: 训练完成后，更新结果预览曲线
           toast("训练完成");
         }
         setIsFinished(true);
         setLatestMessage("[WebSocket] Finished!");
-        if (socket.current?.connected) socket.current?.disconnect();
+        if (socket.current?.connected) disconnect();
       }
     );
   };
 
+  const sendStreamingItem = (param: TaskParam) => {
+    socket.current?.emit("run", param);
+  };
+
   // 组件注销时，关闭socket连接
   useEffect(() => {
-    return () => {
-      socket.current?.disconnect();
-      socket.current?.off("connect");
-      socket.current?.off("disconnect");
-      socket.current?.off("message");
-      socket.current?.off("progress");
-      socket.current?.off("done");
-    };
+    return disconnect;
   }, []);
 
   return {
@@ -90,5 +112,7 @@ export default function useSocket() {
     latestMessage,
     progress,
     connect,
+    disconnect,
+    sendStreamingItem,
   };
 }

@@ -33,6 +33,7 @@ const Content = styled("div")`
   width: 100%;
   font-size: 12px;
   overflow: scroll;
+  white-space: wrap;
   margin: 0;
   padding: 10px;
   background-color: #ededed;
@@ -80,7 +81,10 @@ const LogBox: FC<{
             {messages?.map((msg, index) => (
               <Sheet
                 key={index}
-                sx={{ bgcolor: "transparent", transition: "all 0.2s ease" }}
+                sx={{
+                  bgcolor: "transparent",
+                  transition: "all 0.2s ease",
+                }}
               >
                 <Typography fontSize="12px">{msg}</Typography>
               </Sheet>
