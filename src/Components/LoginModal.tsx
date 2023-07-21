@@ -6,6 +6,7 @@ import useAxios from "@/Hooks/useAxios";
 import useGlobalState from "@/Hooks/useGlobalState";
 import FormInput from "./General/FormInput";
 import AnimatedModal from "./General/AnimatedModal";
+import { toast } from "sonner";
 
 interface IProps {
   open: boolean;
@@ -24,20 +25,27 @@ const LoginModal: React.FC<IProps> = ({ open, onLogin }) => {
       data: { username, password },
     },
     (resp) => {
-      onLogin?.(resp.data);
-      setGlobalUsername(
-        resp.data?.length ?? 0 > 0 ? (resp.data as string) : "User"
-      );
+      const { code, data, msg } = resp;
+      if (code === 0) {
+        onLogin?.(data);
+        const name = data?.length ?? 0 > 0 ? (data as string) : "User";
+        setGlobalUsername(name);
+        window.localStorage.setItem("user", name);
+      } else {
+        toast.error(msg);
+      }
     }
   );
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (username === "local") {
       onLogin?.(username);
       setGlobalUsername(username);
       return;
     }
-    fetchLogin();
+    await fetchLogin();
+    setUsername("");
+    setPassword("");
   };
 
   return (

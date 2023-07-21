@@ -4,9 +4,18 @@ import useGlobalState from "@/Hooks/useGlobalState";
 import { Stack } from "@mui/joy";
 import { Outlet } from "react-router-dom";
 import { toast } from "sonner";
+import { useEffect } from "react";
 
 const Layout = () => {
   const logIn = useGlobalState((s) => !!s.username);
+  const setGlobalUsername = useGlobalState((s) => s.setUsername);
+
+  useEffect(() => {
+    const user = window.localStorage.getItem("user");
+    if (user !== null) {
+      setGlobalUsername(user);
+    }
+  }, [setGlobalUsername]);
 
   return (
     <Stack

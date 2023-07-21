@@ -28,6 +28,7 @@ const UserProfile = () => {
     (resp) => {
       if (resp.code === 0) {
         setUsername(undefined);
+        window.localStorage.removeItem("user");
         toast.success("登出成功！");
       } else {
         toast.error("登出失败: " + error);
