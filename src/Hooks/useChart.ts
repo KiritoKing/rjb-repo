@@ -5,9 +5,13 @@ import { useCallback, useEffect, useRef } from "react";
 const DATA_DENSITY = 50; // 数据密度，即每多少px显示一个数据
 
 const basicOption: echarts.EChartsOption = {
-  // title: {
-  //   text: "数据预览",
-  // },
+  title: {
+    text: "数据预览",
+    left: "center",
+  },
+  legend: {
+    top: 30,
+  },
   // tooltip: {
   //   trigger: "axis",
   // },
@@ -20,11 +24,12 @@ const basicOption: echarts.EChartsOption = {
 export default function useChart(density: number = DATA_DENSITY) {
   const ref = useRef<HTMLDivElement>(null);
   const chart = useRef<echarts.ECharts>();
+
   // 初始化chart
   useEffect(() => {
     if (!ref.current) return;
-    echarts.dispose(ref.current); // 先释放之前的内容
     chart.current = echarts.init(ref.current);
+    // 响应窗口大小变化
     window.addEventListener("resize", () => {
       const fn = _.debounce(() => chart.current?.resize(), 100);
       fn();
@@ -32,7 +37,14 @@ export default function useChart(density: number = DATA_DENSITY) {
     chart.current.setOption({
       ...basicOption,
     });
+    return () => {
+      if (ref.current) {
+        echarts.dispose(ref.current); // 先释放之前的内容
+      }
+    };
   }, []);
+
+  // 响应容器大小变化
   useEffect(() => {
     if (!chart.current) return;
     chart.current.resize();
@@ -71,6 +83,7 @@ export default function useChart(density: number = DATA_DENSITY) {
         series: seriesType,
       };
       chart.current.setOption(option);
+      chart.current.resize();
     },
     [density]
   );

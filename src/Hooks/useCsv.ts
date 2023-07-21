@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import _ from "lodash";
+import { toast } from "sonner";
 
 interface IOption {
   dilemma?: string; // 分隔符
@@ -58,7 +59,6 @@ async function readCsv(file: Blob, dilemma = ","): Promise<ITableData | null> {
  * 用于解析csv文件为表格数据
  * @param files csv文件
  * @param options 解析选项，包括分隔符和是否解析首行
- * @returns [data, error]: data-解析后的表格数据，error-发生错误的行索引
  */
 export default function useCsv(
   files: CsvFileItem[],
@@ -88,8 +88,7 @@ export default function useCsv(
       data: [],
     });
   };
-
-  useEffect(() => {
+  const parse = () => {
     clearData();
     files.forEach((file, index) => {
       readCsv(file.blob, dilemma)
@@ -101,16 +100,19 @@ export default function useCsv(
           } else if (_.isEqual(res.columns, data.columns)) {
             pushData(res);
           } else {
-            setError((old) => [...old, index]); // 当发生错误时写入错误索引
+            setError((old) => [...old, index]); // 当发生z错误时写入错误索引
           }
+          toast("解析完成");
         })
         .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.warn(`[useCsv] Read csv error: ${err}`);
+          toast.error(
+            `${err instanceof Error && err.message + ": "}文件${
+              file.title
+            }解析失败`
+          );
         });
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [files, withColumn, dilemma]);
+  };
 
-  return [data, error] as [ITableData, number[]];
+  return [data, error, parse] as const;
 }

@@ -19,9 +19,9 @@ const LineChart: FC<IProps> = ({ data }) => {
       <Sheet
         ref={chartRef}
         sx={{
-          display: data.data.length > 0 ? "block" : "none",
+          display: data.data?.length > 0 ? "block" : "none",
           width: "100%",
-          height: "400px",
+          height: "25rem",
           my: 2,
           borderRadius: 2,
         }}
