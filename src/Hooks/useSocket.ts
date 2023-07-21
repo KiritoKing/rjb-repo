@@ -22,6 +22,14 @@ type TaskParam =
       data: TableRow;
     };
 
+export type TaskStatusType =
+  | "waiting"
+  | "connecting"
+  | "running"
+  | "finished"
+  | "abort"
+  | "error";
+
 export default function useSocket() {
   const socket = useRef<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(
@@ -29,12 +37,14 @@ export default function useSocket() {
   );
   const [latestMessage, setLatestMessage] = useState<unknown>(null);
   const [progress, setProgress] = useState<number>(0);
-  const [isFinished, setIsFinished] = useState<boolean>(false);
+  const finished = useRef<boolean | null>(false);
+  const [taskStatus, setTaskStatus] = useState<TaskStatusType>("waiting");
   const pushTableData = useGlobalState((s) => s.pushTableData);
 
   const taskParams = useRef<TaskParam | null>();
 
   const connect = (url: string, params?: TaskParam) => {
+    setTaskStatus("connecting");
     taskParams.current = params;
     socket.current = io(url, { autoConnect: false, reconnection: false });
     socket.current.connect();
@@ -51,6 +61,8 @@ export default function useSocket() {
     socket.current?.off("progress");
     socket.current?.off("done");
     socket.current = null;
+    if (finished.current) setTaskStatus("finished");
+    else setTaskStatus("abort");
   };
 
   const initSocket = () => {
@@ -59,6 +71,7 @@ export default function useSocket() {
       setIsConnected(true);
       toast("WebSocket已连接");
       setLatestMessage("[WebSocket] Connected!");
+      setTaskStatus("running");
       // taskParams为空时为dry-run，仅连接不`run`
       if (taskParams.current) {
         socket.current?.emit("run", taskParams.current);
@@ -100,7 +113,7 @@ export default function useSocket() {
           // TODO: 训练完成后，更新结果预览曲线
           toast("训练完成");
         }
-        setIsFinished(true);
+        finished.current = true;
         setLatestMessage("[WebSocket] Finished!");
         if (socket.current?.connected) disconnect();
       }
@@ -123,7 +136,7 @@ export default function useSocket() {
 
   return {
     isConnected,
-    isFinished,
+    taskStatus,
     latestMessage,
     progress,
     connect,

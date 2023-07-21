@@ -1,8 +1,7 @@
 import { CircularProgress, LinearProgress, Sheet, Typography } from "@mui/joy";
 import { FC, useMemo } from "react";
 import DoneIcon from "@mui/icons-material/Done";
-
-export type TaskStatusType = "connecting" | "running" | "finished" | "waiting";
+import { TaskStatusType } from "@/Hooks/useSocket";
 
 const TaskStatus: FC<{
   status: TaskStatusType;
@@ -63,7 +62,19 @@ const TaskStatus: FC<{
         </Sheet>
       );
     } else {
-      return <></>;
+      return (
+        <Sheet
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
+          <Typography>运行任务终止</Typography>
+        </Sheet>
+      );
     }
   }, [status, progress]);
 

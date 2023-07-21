@@ -7,8 +7,8 @@ import {
   Stack,
   Typography,
 } from "@mui/joy";
-import { FC, useEffect, useMemo, useRef, useState } from "react";
-import TaskStatus, { TaskStatusType } from "./TaskStatus";
+import { FC, useEffect, useRef, useState } from "react";
+import TaskStatus from "./TaskStatus";
 import LogBox from "./LogBox";
 import useSocket from "@/Hooks/useSocket";
 import { SOCKET_URL } from "@/Constants/url";
@@ -42,20 +42,13 @@ const TaskManager: FC<IProps> = ({
 
   const {
     isConnected,
-    isFinished,
+    taskStatus,
     connect,
     disconnect,
     progress,
     latestMessage,
     sendStreamingItem,
   } = useSocket();
-
-  const status: TaskStatusType = useMemo(() => {
-    if (!running) return "waiting";
-    if (!isConnected && !isFinished) return "connecting";
-    if (!isFinished) return "running";
-    return "finished";
-  }, [isConnected, isFinished, running]);
 
   useEffect(() => {
     if (latestMessage) {
@@ -98,7 +91,6 @@ const TaskManager: FC<IProps> = ({
       toast.error("没有选择有效数据集");
       return;
     }
-    console.log(currentRow.current);
     if (currentRow.current != null) {
       if (currentRow.current < tableData.data.length) {
         sendStreamingItem({
@@ -121,63 +113,72 @@ const TaskManager: FC<IProps> = ({
         sx={{
           mt: 1,
           justifyContent: mode === "apply" ? "space-between" : "flex-end",
+          alignItems: "center",
         }}
       >
         {mode === "apply" && (
-          <>
-            <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+          <Stack spacing={2}>
+            <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
               <Typography level="body2">模拟实时输入</Typography>
               <FluentSwitch
                 checked={streaming}
                 onChange={(value) => setStreaming(value)}
               />
+              <Select
+                sx={{ px: 2 }}
+                value={streamingMode}
+                onChange={(_e, v) => {
+                  if (v) setStreamingMode(v);
+                }}
+                placeholder="选择一种流式输入方式"
+              >
+                <Option value="manual">手动输入</Option>
+                <Option value="auto">自动输入</Option>
+              </Select>
             </Stack>
             {streaming && (
               <Stack
-                direction="row"
+                direction={{ xs: "column", sm: "row" }}
                 spacing={1}
                 sx={{ alignItems: "center", transition: "all 0.3s ease" }}
               >
-                <Select
-                  value={streamingMode}
-                  onChange={(_e, v) => {
-                    if (v) setStreamingMode(v);
-                  }}
-                  placeholder="选择一种流式输入方式"
-                >
-                  <Option value="manual">手动输入</Option>
-                  <Option value="auto">自动输入</Option>
-                </Select>
-                {streamingMode === "manual" ? (
-                  <>
-                    <Button
-                      onClick={handleSendingStream}
-                      disabled={!isConnected}
-                    >
-                      发送数据
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Input
-                      type="number"
-                      placeholder="自动发送间隔"
-                      endDecorator="ms"
-                    />
-                    <Button disabled={!isConnected}>更新间隔</Button>
-                  </>
-                )}
+                <Stack direction="row" spacing={1}>
+                  {streamingMode === "manual" ? (
+                    <>
+                      <Button
+                        onClick={handleSendingStream}
+                        disabled={!isConnected}
+                      >
+                        发送数据
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Input
+                        type="number"
+                        placeholder="自动发送间隔"
+                        endDecorator="ms"
+                      />
+                      <Button disabled={!isConnected}>更新间隔</Button>
+                    </>
+                  )}
+                </Stack>
               </Stack>
             )}
-          </>
+          </Stack>
         )}
-        <Button onClick={handleRunModel} disabled={running || !canRun}>
-          {mode === "train" ? "训练模型" : "启动模型"}
-        </Button>
+        <Stack direction="row" spacing={2}>
+          <Button disabled={!isConnected} onClick={disconnect}>
+            断开连接
+          </Button>
+          <Button onClick={handleRunModel} disabled={running || !canRun}>
+            {mode === "train" ? "训练模型" : "启动模型"}
+          </Button>
+        </Stack>
       </Stack>
       {running && (
         <>
-          <TaskStatus status={status} progress={progress} />
+          <TaskStatus status={taskStatus} progress={progress} />
           <LogBox messages={messages} />
         </>
       )}
