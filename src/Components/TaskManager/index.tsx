@@ -159,7 +159,11 @@ const TaskManager: FC<IProps> = ({
                   </>
                 ) : (
                   <>
-                    <Input placeholder="自动发送间隔" endDecorator="ms" />
+                    <Input
+                      type="number"
+                      placeholder="自动发送间隔"
+                      endDecorator="ms"
+                    />
                     <Button disabled={!isConnected}>更新间隔</Button>
                   </>
                 )}

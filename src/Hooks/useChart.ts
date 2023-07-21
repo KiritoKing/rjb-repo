@@ -5,16 +5,33 @@ import { useCallback, useEffect, useRef } from "react";
 const DATA_DENSITY = 50; // 数据密度，即每多少px显示一个数据
 
 const basicOption: echarts.EChartsOption = {
-  title: {
-    text: "数据预览",
-    left: "center",
-  },
   legend: {
-    top: 30,
+    type: "scroll",
   },
-  // tooltip: {
-  //   trigger: "axis",
-  // },
+  tooltip: {
+    trigger: "axis",
+  },
+  dataZoom: [
+    {
+      type: "inside",
+      start: 98,
+      end: 100,
+    },
+    {
+      start: 98,
+      end: 100,
+    },
+  ],
+  toolbox: {
+    orient: "vertical",
+    top: 30,
+    feature: {
+      dataZoom: {},
+      saveAsImage: {
+        name: `chart-${new Date().toLocaleString()}`,
+      },
+    },
+  },
 };
 
 /**
@@ -74,13 +91,24 @@ export default function useChart(density: number = DATA_DENSITY) {
       }));
       const option: echarts.EChartsOption = {
         ...basicOption,
-        legend: {},
         dataset: {
           source: sampledData,
         },
         xAxis: { type: "category" }, // 第一列为横坐标
         yAxis: {},
         series: seriesType,
+        // visualMap: {
+        //   type: "piecewise",
+        //   show: false,
+        //   dimension: 0,
+        //   seriesIndex: 0,
+        //   pieces: [
+        //     {
+        //       gt: 1,
+        //       color: "rgba(0, 0, 180, 0.4)",
+        //     },
+        //   ],
+        // },
       };
       chart.current.setOption(option);
       chart.current.resize();
