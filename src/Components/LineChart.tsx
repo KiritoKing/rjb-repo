@@ -4,15 +4,16 @@ import { FC, useEffect } from "react";
 
 interface IProps {
   data: ITableData;
+  rawLength?: number;
 }
 
-const LineChart: FC<IProps> = ({ data }) => {
+const LineChart: FC<IProps> = ({ data, rawLength }) => {
   // TODO: 根据数据大小选择显示密度
   const [chartRef, setData] = useChart(1);
 
   useEffect(() => {
-    setData(data);
-  }, [data, setData]);
+    setData(data, rawLength);
+  }, [data, rawLength, setData]);
 
   return (
     <>

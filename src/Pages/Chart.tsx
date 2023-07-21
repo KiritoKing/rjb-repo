@@ -2,15 +2,38 @@ import TablePreviewDialog from "@/Components/FileManage/TablePreviewDialog";
 import SectionCard from "@/Components/General/SectionCard";
 import LineChart from "@/Components/LineChart";
 import useCsv from "@/Hooks/useCsv";
+import useGlobalState from "@/Hooks/useGlobalState";
 import { Button, Stack } from "@mui/joy";
+import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
+
+function generateFakeData(columns: string[], rows: number): ITableData {
+  const ans: ITableData = {
+    columns,
+    data: [],
+  };
+  const stamp = dayjs().valueOf() - rows * 1000;
+  for (let i = 0; i < rows; i++) {
+    const data: TableRow = [
+      dayjs(stamp + i * 1000).format("YYYY-MM-DD HH:mm:ss"),
+    ];
+    for (let j = 0; j < columns.length - 1; j++) {
+      data.push(Math.random() * 10000);
+    }
+    ans.data.push(data);
+  }
+  return ans;
+}
 
 const Chart = () => {
   const [file, setFile] = useState<CsvFileItem>();
-  const [table, error, parse] = useCsv(file ? [file] : []);
+  const [table, error, parse, pushItem] = useCsv(file ? [file] : []);
   const [previewOpen, setPreviewOpen] = useState(false);
+  const rawLength = useGlobalState((s) => s.rawDataLength);
+  const setTable = useGlobalState((s) => s.setTableData);
 
   useEffect(() => {
+    console.log(rawLength);
     if (file) {
       const { columns, data } = table;
       setFile((file) => {
@@ -48,6 +71,16 @@ const Chart = () => {
           >
             预览
           </Button>
+          <Button
+            sx={{ ml: 2 }}
+            onClick={() => {
+              if (!table.columns) return;
+              const tmp = generateFakeData(table.columns, 1000);
+              pushItem(tmp);
+            }}
+          >
+            添加数据
+          </Button>
         </div>
         <div>CSV Parse Error Lines: {JSON.stringify(error)}</div>
         <input
@@ -63,7 +96,7 @@ const Chart = () => {
             });
           }}
         />
-        <LineChart data={table} />
+        <LineChart data={table} rawLength={23000} />
       </Stack>
       <TablePreviewDialog
         open={previewOpen}

@@ -114,5 +114,5 @@ export default function useCsv(
     });
   };
 
-  return [data, error, parse] as const;
+  return [data, error, parse, pushData] as const;
 }

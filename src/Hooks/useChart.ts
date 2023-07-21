@@ -11,17 +11,6 @@ const basicOption: echarts.EChartsOption = {
   tooltip: {
     trigger: "axis",
   },
-  dataZoom: [
-    {
-      type: "inside",
-      start: 98,
-      end: 100,
-    },
-    {
-      start: 98,
-      end: 100,
-    },
-  ],
   toolbox: {
     orient: "vertical",
     top: 30,
@@ -68,14 +57,8 @@ export default function useChart(density: number = DATA_DENSITY) {
   }, [ref.current?.clientWidth, ref.current?.clientHeight]);
 
   const setData = useCallback(
-    (data: ITableData) => {
+    (data: ITableData, rawLength?: number) => {
       if (!ref.current || !chart.current || !data.columns) return;
-      // const sampleNum = Number(
-      //   (ref.current.clientWidth / DATA_DENSITY).toFixed()
-      // ); // 代表需要多少个数据点
-      // console.log(
-      //   `PointNum=${ref.current.clientWidth}/${DATA_DENSITY}=${sampleNum}`
-      // );
       const sampledData = [
         data.columns,
         ...data.data
@@ -86,9 +69,25 @@ export default function useChart(density: number = DATA_DENSITY) {
             );
           }),
       ];
-      const seriesType: echarts.SeriesOption[] = data.columns.map(() => ({
-        type: "line",
-      }));
+      const seriesType: echarts.SeriesOption[] = data.columns
+        .slice(1)
+        .map(() => ({
+          type: "line",
+          symbol: "none",
+          markLine: {
+            symbol: ["none", "none"],
+            label: { show: false },
+            data: [{ xAxis: rawLength }],
+          },
+          markArea: {
+            silent: true,
+            itemStyle: {
+              opacity: 0.3,
+              color: "#ffee6f",
+            },
+            data: [[{ xAxis: rawLength }, { xAxis: data.data.length }]],
+          },
+        }));
       const option: echarts.EChartsOption = {
         ...basicOption,
         dataset: {
@@ -97,18 +96,17 @@ export default function useChart(density: number = DATA_DENSITY) {
         xAxis: { type: "category" }, // 第一列为横坐标
         yAxis: {},
         series: seriesType,
-        // visualMap: {
-        //   type: "piecewise",
-        //   show: false,
-        //   dimension: 0,
-        //   seriesIndex: 0,
-        //   pieces: [
-        //     {
-        //       gt: 1,
-        //       color: "rgba(0, 0, 180, 0.4)",
-        //     },
-        //   ],
-        // },
+        dataZoom: [
+          {
+            type: "inside",
+            start: 90,
+            end: 100,
+          },
+          {
+            start: 90,
+            end: 100,
+          },
+        ],
       };
       chart.current.setOption(option);
       chart.current.resize();

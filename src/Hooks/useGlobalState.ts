@@ -4,6 +4,7 @@ import { immer } from "zustand/middleware/immer";
 type State = {
   username?: string;
   tableData: ITableData;
+  rawDataLength?: number; // 非预测数据（输入数据的长度）
 };
 
 type Actions = {
@@ -32,7 +33,7 @@ const useGlobalState = create(
           set(() => ({ tableData: { columns: [], data: [] } }));
           return;
         }
-        set(() => ({ tableData: data }));
+        set(() => ({ tableData: data, rawDataLength: data.data.length }));
       },
     };
   })
