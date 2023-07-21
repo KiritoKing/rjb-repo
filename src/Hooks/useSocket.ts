@@ -108,7 +108,6 @@ export default function useSocket() {
       (data: { type: "train" | "apply"; data: TableRow[] }) => {
         if (data.type === "apply" && data.data) {
           pushTableData(data.data);
-          console.log(data.data);
         } else if (data.type === "train") {
           // TODO: 训练完成后，更新结果预览曲线
           toast("训练完成");

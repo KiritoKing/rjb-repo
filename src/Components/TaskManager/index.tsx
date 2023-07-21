@@ -15,6 +15,7 @@ import { SOCKET_URL } from "@/Constants/url";
 import { toast } from "sonner";
 import FluentSwitch from "../General/FluentSwitch";
 import useGlobalState from "@/Hooks/useGlobalState";
+import { useLatest } from "@reactuses/core";
 
 interface IProps {
   canRun?: boolean;
@@ -37,6 +38,8 @@ const TaskManager: FC<IProps> = ({
     "manual"
   );
   const [messages, setMessages] = useState<string[]>([]);
+  const [sendInterval, setSendInterval] = useState(5000);
+  const timer = useRef<number | null>(null);
   const tableData = useGlobalState((s) => s.tableData);
   const currentRow = useRef<number | null>(0);
 
@@ -49,6 +52,8 @@ const TaskManager: FC<IProps> = ({
     latestMessage,
     sendStreamingItem,
   } = useSocket();
+
+  const latestConnected = useLatest(isConnected);
 
   useEffect(() => {
     if (latestMessage) {
@@ -105,6 +110,21 @@ const TaskManager: FC<IProps> = ({
     }
   };
 
+  const handleCreateInterval = () => {
+    handleSendingStream();
+    if (timer.current) {
+      clearInterval(timer.current);
+    }
+    timer.current = setInterval(() => {
+      if (latestConnected.current) {
+        handleSendingStream();
+        return;
+      } else if (timer.current) {
+        clearInterval(timer.current);
+      }
+    }, sendInterval);
+  };
+
   return (
     <Sheet sx={{ px: 2 }}>
       <Stack
@@ -124,46 +144,55 @@ const TaskManager: FC<IProps> = ({
                 checked={streaming}
                 onChange={(value) => setStreaming(value)}
               />
-              <Select
-                sx={{ px: 2 }}
-                value={streamingMode}
-                onChange={(_e, v) => {
-                  if (v) setStreamingMode(v);
-                }}
-                placeholder="选择一种流式输入方式"
-              >
-                <Option value="manual">手动输入</Option>
-                <Option value="auto">自动输入</Option>
-              </Select>
             </Stack>
             {streaming && (
-              <Stack
-                direction={{ xs: "column", sm: "row" }}
-                spacing={1}
-                sx={{ alignItems: "center", transition: "all 0.3s ease" }}
-              >
-                <Stack direction="row" spacing={1}>
-                  {streamingMode === "manual" ? (
-                    <>
-                      <Button
-                        onClick={handleSendingStream}
-                        disabled={!isConnected}
-                      >
-                        发送数据
-                      </Button>
-                    </>
-                  ) : (
-                    <>
-                      <Input
-                        type="number"
-                        placeholder="自动发送间隔"
-                        endDecorator="ms"
-                      />
-                      <Button disabled={!isConnected}>更新间隔</Button>
-                    </>
-                  )}
+              <>
+                <Select
+                  sx={{ px: 2 }}
+                  value={streamingMode}
+                  onChange={(_e, v) => {
+                    if (v) setStreamingMode(v);
+                  }}
+                  placeholder="选择一种流式输入方式"
+                >
+                  <Option value="manual">手动输入</Option>
+                  <Option value="auto">自动输入</Option>
+                </Select>
+                <Stack
+                  direction={{ xs: "column", sm: "row" }}
+                  spacing={1}
+                  sx={{ alignItems: "center", transition: "all 0.3s ease" }}
+                >
+                  <Stack direction="row" spacing={1}>
+                    {streamingMode === "manual" ? (
+                      <>
+                        <Button
+                          onClick={handleSendingStream}
+                          disabled={!isConnected}
+                        >
+                          发送数据
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Input
+                          type="number"
+                          value={sendInterval}
+                          onChange={(e) => setSendInterval(+e.target.value)}
+                          placeholder="自动发送间隔"
+                          endDecorator="ms"
+                        />
+                        <Button
+                          onClick={handleCreateInterval}
+                          disabled={!isConnected}
+                        >
+                          开始任务
+                        </Button>
+                      </>
+                    )}
+                  </Stack>
                 </Stack>
-              </Stack>
+              </>
             )}
           </Stack>
         )}

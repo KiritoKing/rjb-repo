@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import FileManager from "@/Components/FileManage";
 import TaskManager from "@/Components/TaskManager";
 import { useEffect, useState } from "react";
-import LineChart from "@/Components/LineChart";
 import useGlobalState from "@/Hooks/useGlobalState";
 import { useImmer } from "use-immer";
 import ModelInfo from "@/Components/ModelManage/ModelInfo";
@@ -15,7 +14,6 @@ const Train = () => {
   const nav = useNavigate();
   const [canRun, setCanRun] = useState(false);
   const [setId, setSetId] = useState<string>();
-  const tableData = useGlobalState((state) => state.tableData);
   const setTableData = useGlobalState((state) => state.setTableData);
 
   const [params, setParams] = useImmer<TrainParams>({
@@ -69,10 +67,6 @@ const Train = () => {
           setId={setId}
           modelParams={params}
         />
-      </SectionCard>
-      <SectionCard>
-        <SectionTitle title="效果预览" subTitle="Preview" />
-        <LineChart data={tableData} />
       </SectionCard>
     </>
   );
