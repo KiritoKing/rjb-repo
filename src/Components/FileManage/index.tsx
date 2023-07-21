@@ -98,6 +98,8 @@ const FileManager: FC<{
             setCsvFiles((draft) => {
               draft.splice(index, 1);
             });
+            // TODO: 这里是暂时选择清空，应该是重新获取merged
+            setTableData();
             toast.success("删除成功");
           }
         }
@@ -128,7 +130,10 @@ const FileManager: FC<{
           <Typography sx={{ flex: 1 }} level="h5" component="span">
             选择要上传的文件
           </Typography>
-          <UploadButton onUpload={handleUpload} />
+          <UploadButton
+            disabled={csvFiles.length > 0}
+            onUpload={handleUpload}
+          />
         </Stack>
         <FileList files={csvFiles} onDeleteItem={handleDelete} />
       </Sheet>

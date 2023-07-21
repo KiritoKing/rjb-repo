@@ -4,6 +4,7 @@ import { FC } from "react";
 
 interface IProps {
   onUpload?: (file: File) => void;
+  disabled?: boolean;
 }
 
 const FileInput: FC<{ onChange?: (file: File) => void }> = ({ onChange }) => (
@@ -21,7 +22,7 @@ const FileInput: FC<{ onChange?: (file: File) => void }> = ({ onChange }) => (
   />
 );
 
-const UploadButton: FC<IProps> = ({ onUpload }) => {
+const UploadButton: FC<IProps> = ({ onUpload, disabled }) => {
   return (
     <Sheet>
       <FormControl sx={{ py: "auto", my: "auto" }}>
@@ -33,7 +34,11 @@ const UploadButton: FC<IProps> = ({ onUpload }) => {
           }}
         >
           <Button
-            sx={{ height: "1rem" }}
+            disabled={disabled}
+            sx={{
+              height: "1rem",
+              pointerEvents: disabled ? "none" : undefined,
+            }}
             component="a"
             startDecorator={<AddIcon />}
           >

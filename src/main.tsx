@@ -9,6 +9,7 @@ import { Toaster } from "sonner";
 import "./index.css";
 import "@fontsource/public-sans";
 import { CssVarsProvider } from "@mui/joy";
+import Chart from "./Pages/Chart";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "train",
         element: <Train />,
+      },
+      {
+        path: "chart",
+        element: <Chart />,
       },
     ],
   },

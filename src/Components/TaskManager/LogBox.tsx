@@ -32,7 +32,7 @@ const ExpandButton = styled("span")`
 const Content = styled("div")`
   width: 100%;
   font-size: 12px;
-  overflow-y: scroll;
+  overflow: scroll;
   margin: 0;
   padding: 10px;
   background-color: #ededed;

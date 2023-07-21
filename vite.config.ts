@@ -1,10 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 
-// const API_URL = "http://192.168.173.159:5000";
-const API_URL = "http://127.0.0.1:5000";
-// const SOCKET_URL = "http://192.168.173.159:4567";
-const SOCKET_URL = "http://127.0.0.1:4567";
+const API_URL = "http://192.168.170.159:5000";
 
 // https://vitejs.dev/config/
 export default defineConfig({
