@@ -1,4 +1,4 @@
-import { Sheet, Stack, Typography, styled } from "@mui/joy";
+import { Button, Sheet, Stack, Typography, styled } from "@mui/joy";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import React, { FC, useRef } from "react";
@@ -32,10 +32,10 @@ const ExpandButton = styled("span")`
 const Content = styled("div")`
   width: 100%;
   font-size: 12px;
-  overflow: scroll;
+  overflow-y: scroll;
   white-space: wrap;
   margin: 0;
-  padding: 10px;
+  padding: 0 10px;
   background-color: #ededed;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
@@ -46,6 +46,20 @@ const LogBox: FC<{
 }> = ({ messages }) => {
   const [showDetail, setShowDetail] = React.useState(false);
   const logContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleExportLog = () => {
+    const logContainer = logContainerRef.current;
+    if (logContainer) {
+      const log = logContainer.innerText;
+      const blob = new Blob([log], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `log-${new Date().toLocaleString()}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  };
 
   return (
     <Sheet sx={{ px: "var(--log-box-padding)", mt: 2, pt: 1 }}>
@@ -66,6 +80,14 @@ const LogBox: FC<{
           >
             {showDetail ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </ExpandButton>
+          <Button
+            color="neutral"
+            variant="plain"
+            sx={{ ml: 1 }}
+            onClick={handleExportLog}
+          >
+            导出
+          </Button>
         </Sheet>
       </Header>
       <Content>
